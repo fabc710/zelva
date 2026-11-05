@@ -322,6 +322,69 @@
     });
   });
 
+  /* ---------- Nosotros: rasgos de personalidad (lista + panel) ------- */
+  d.querySelectorAll("[data-persona]").forEach(function (wrap) {
+    var items = wrap.querySelectorAll(".persona__item");
+    var panel = wrap.querySelector(".persona__panel");
+    if (!panel || !items.length) return;
+    var numEl = panel.querySelector(".persona__panel-num");
+    var titleEl = panel.querySelector(".persona__panel-title");
+    var descEl = panel.querySelector(".persona__panel-desc");
+    var bar = panel.querySelector(".persona__progress span");
+    var gsap = window.gsap;
+    var current = 0, barTween = null, userTook = false, inView = false;
+    wrap.classList.add("persona--js");
+    var panelVisible = function () { return getComputedStyle(panel).display !== "none"; };
+
+    var fill = function (i) {
+      var it = items[i];
+      numEl.textContent = it.querySelector(".persona__num").textContent;
+      titleEl.innerHTML = it.querySelector(".persona__name").innerHTML;
+      descEl.innerHTML = it.querySelector(".persona__desc").innerHTML;
+    };
+    var cycle = function () {
+      if (barTween) barTween.kill();
+      if (!gsap || reduceMotion || userTook || !inView || !panelVisible()) { if (bar) bar.style.transform = "scaleX(0)"; return; }
+      barTween = gsap.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: 5, ease: "none", onComplete: function () { show((current + 1) % items.length); } });
+    };
+    var show = function (i) {
+      if (i !== current) {
+        current = i;
+        items.forEach(function (it, j) {
+          it.classList.toggle("is-active", j === i);
+          it.querySelector(".persona__btn").setAttribute("aria-pressed", String(j === i));
+        });
+        var parts = [numEl, titleEl, descEl];
+        if (gsap && !reduceMotion) {
+          gsap.to(parts, { opacity: 0, y: -10, duration: 0.18, overwrite: true, onComplete: function () {
+            fill(i);
+            gsap.fromTo(parts, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.06, ease: "power3.out" });
+          } });
+        } else {
+          fill(i);
+        }
+      }
+      cycle();
+    };
+
+    items.forEach(function (it, i) {
+      var btn = it.querySelector(".persona__btn");
+      btn.addEventListener("click", function () { userTook = true; show(i); });
+      btn.addEventListener("focus", function () { userTook = true; show(i); });
+      btn.addEventListener("mouseenter", function () { if (window.matchMedia("(hover: hover)").matches) { userTook = true; show(i); } });
+    });
+    // Pausa mientras el mouse está sobre la sección
+    wrap.addEventListener("mouseenter", function () { if (barTween) barTween.pause(); });
+    wrap.addEventListener("mouseleave", function () { if (barTween && !userTook) barTween.resume(); });
+    // Solo avanza solo cuando la sección está a la vista
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        inView = entries[0].isIntersecting;
+        if (inView) cycle(); else if (barTween) barTween.pause();
+      }, { threshold: 0.35 }).observe(wrap);
+    }
+  });
+
   /* ---------- Formulario de cotización por pasos (Contacto) ---------- */
   var form = d.getElementById("quote-form");
   if (form) {

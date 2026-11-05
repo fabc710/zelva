@@ -209,15 +209,6 @@
       gsap.fromTo(list, { "--line": 0 }, { "--line": 1, ease: "none", scrollTrigger: { trigger: list, start: "top 82%", end: "bottom 60%", scrub: 0.6 } });
     });
 
-    /* ---------- Nosotros: cada rasgo se ubica en su punto justo ------- */
-    gsap.utils.toArray(".spectrum__row").forEach(function (row, i) {
-      var target = parseFloat(row.style.getPropertyValue("--k")) || 0.3;
-      gsap.fromTo(row, { "--k": 0.5 }, {
-        "--k": target, duration: 1.3, ease: "power3.out", delay: i * 0.08,
-        scrollTrigger: { trigger: row, start: "top 90%", once: true }
-      });
-    });
-
     /* ---------- 6. Etapas de la vida: scroll horizontal fijado -------- */
     var cleanups = [];
     var stagesEl = d.querySelector("[data-stages]");

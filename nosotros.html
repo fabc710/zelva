@@ -23,13 +23,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&amp;family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css">
-<link rel="stylesheet" href="css/zelva.css?v=e2f747fa">
+<link rel="stylesheet" href="css/zelva.css?v=986f5fcb">
 <script src="js/vendor/gsap/gsap.min.js" defer></script>
 <script src="js/vendor/gsap/ScrollTrigger.min.js" defer></script>
 <script src="js/vendor/gsap/SplitText.min.js" defer></script>
 <script src="js/vendor/gsap/DrawSVGPlugin.min.js" defer></script>
-<script src="js/zelva.js?v=9df5d7d2" defer></script>
-<script src="js/zelva-motion.js?v=5704e380" defer></script>
+<script src="js/zelva.js?v=15686c30" defer></script>
+<script src="js/zelva-motion.js?v=be69a2b3" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#main"><span lang="es">Saltar al contenido</span><span lang="en">Skip to content</span></a>
@@ -300,78 +300,50 @@
       </div>
     </div>
     <div class="diagonal" aria-hidden="true"></div>
-    <div class="container traits-layout">
-      <div class="section-head traits-layout__head" data-reveal>
-        <p class="eyebrow"><span lang="es">Cómo somos</span><span lang="en">Who we are</span></p>
-        <h2 class="h2" id="traits-title"><span lang="es">El equilibrio que nos define.</span><span lang="en">The balance that defines us.</span></h2>
-        <p class="lead"><span lang="es">Nuestra personalidad es un punto justo: firmes en lo importante, cercanos en todo lo demás.</span><span lang="en">Our personality is about balance: firm on what matters, approachable in everything else.</span></p>
-        <ul class="traits-legend">
-          <li><span class="traits-legend__dot"></span><span lang="es">Donde estamos</span><span lang="en">Where we stand</span></li>
-          <li><span class="traits-legend__dot traits-legend__dot--muted"></span><span lang="es">Lo que evitamos</span><span lang="en">What we avoid</span></li>
-        </ul>
+    <div class="container">
+      <div class="section-head section-head--split" data-reveal>
+        <div>
+          <p class="eyebrow"><span lang="es">Cómo somos</span><span lang="en">Who we are</span></p>
+          <h2 class="h2" id="traits-title"><span lang="es">El equilibrio que nos define.</span><span lang="en">The balance that defines us.</span></h2>
+        </div>
+        <p class="lead"><span lang="es">Seis rasgos que guían cada conversación con nuestros clientes, todos los días.</span><span lang="en">Six traits that guide every conversation with our clients, every day.</span></p>
       </div>
-      <ul class="spectrum" data-reveal>
-        <li class="spectrum__row" style="--k: .24">
-          <div class="spectrum__labels">
-            <strong><span lang="es">Sólidos</span><span lang="en">Solid</span></strong>
-            <span class="spectrum__neg"><span lang="es">pero no rígidos</span><span lang="en">but not rigid</span></span>
-          </div>
-          <div class="spectrum__track" aria-hidden="true">
-            <span class="spectrum__fill"></span>
-            <span class="spectrum__move"><span class="spectrum__dot"></span></span>
-          </div>
-        </li>
-        <li class="spectrum__row" style="--k: .3">
-          <div class="spectrum__labels">
-            <strong><span lang="es">Expertos</span><span lang="en">Expert</span></strong>
-            <span class="spectrum__neg"><span lang="es">pero no complicados</span><span lang="en">but not complicated</span></span>
-          </div>
-          <div class="spectrum__track" aria-hidden="true">
-            <span class="spectrum__fill"></span>
-            <span class="spectrum__move"><span class="spectrum__dot"></span></span>
-          </div>
-        </li>
-        <li class="spectrum__row" style="--k: .34">
-          <div class="spectrum__labels">
-            <strong><span lang="es">Cercanos</span><span lang="en">Approachable</span></strong>
-            <span class="spectrum__neg"><span lang="es">pero no informales</span><span lang="en">but not casual</span></span>
-          </div>
-          <div class="spectrum__track" aria-hidden="true">
-            <span class="spectrum__fill"></span>
-            <span class="spectrum__move"><span class="spectrum__dot"></span></span>
-          </div>
-        </li>
-        <li class="spectrum__row" style="--k: .28">
-          <div class="spectrum__labels">
-            <strong><span lang="es">Elegantes</span><span lang="en">Refined</span></strong>
-            <span class="spectrum__neg"><span lang="es">pero no ostentosos</span><span lang="en">but not flashy</span></span>
-          </div>
-          <div class="spectrum__track" aria-hidden="true">
-            <span class="spectrum__fill"></span>
-            <span class="spectrum__move"><span class="spectrum__dot"></span></span>
-          </div>
-        </li>
-        <li class="spectrum__row" style="--k: .22">
-          <div class="spectrum__labels">
-            <strong><span lang="es">Optimistas</span><span lang="en">Optimistic</span></strong>
-            <span class="spectrum__neg"><span lang="es">pero no alarmistas</span><span lang="en">but not alarmist</span></span>
-          </div>
-          <div class="spectrum__track" aria-hidden="true">
-            <span class="spectrum__fill"></span>
-            <span class="spectrum__move"><span class="spectrum__dot"></span></span>
-          </div>
-        </li>
-        <li class="spectrum__row" style="--k: .32">
-          <div class="spectrum__labels">
-            <strong><span lang="es">Directos</span><span lang="en">Direct</span></strong>
-            <span class="spectrum__neg"><span lang="es">pero no fríos</span><span lang="en">but not cold</span></span>
-          </div>
-          <div class="spectrum__track" aria-hidden="true">
-            <span class="spectrum__fill"></span>
-            <span class="spectrum__move"><span class="spectrum__dot"></span></span>
-          </div>
-        </li>
-      </ul>
+      <div class="persona" data-persona data-reveal>
+        <ol class="persona__list">
+          <li class="persona__item is-active">
+            <button class="persona__btn" type="button" aria-pressed="true"><span class="persona__num">01</span><span class="persona__name"><span lang="es">Sólidos</span><span lang="en">Solid</span></span></button>
+            <p class="persona__desc"><span lang="es">Respaldo firme y procesos claros, con la flexibilidad que cada caso necesita.</span><span lang="en">Firm support and clear processes, with the flexibility every case needs.</span></p>
+          </li>
+          <li class="persona__item">
+            <button class="persona__btn" type="button" aria-pressed="false"><span class="persona__num">02</span><span class="persona__name"><span lang="es">Expertos</span><span lang="en">Expert</span></span></button>
+            <p class="persona__desc"><span lang="es">Conocimiento profundo de seguros, explicado en palabras simples.</span><span lang="en">Deep insurance knowledge, explained in simple words.</span></p>
+          </li>
+          <li class="persona__item">
+            <button class="persona__btn" type="button" aria-pressed="false"><span class="persona__num">03</span><span class="persona__name"><span lang="es">Cercanos</span><span lang="en">Approachable</span></span></button>
+            <p class="persona__desc"><span lang="es">Trato humano y personal, en español o en inglés, siempre con respeto.</span><span lang="en">Human, personal service in English or Spanish, always with respect.</span></p>
+          </li>
+          <li class="persona__item">
+            <button class="persona__btn" type="button" aria-pressed="false"><span class="persona__num">04</span><span class="persona__name"><span lang="es">Elegantes</span><span lang="en">Refined</span></span></button>
+            <p class="persona__desc"><span lang="es">Atención cuidada en cada detalle, con sencillez y buen gusto.</span><span lang="en">Careful attention to every detail, with simplicity and good taste.</span></p>
+          </li>
+          <li class="persona__item">
+            <button class="persona__btn" type="button" aria-pressed="false"><span class="persona__num">05</span><span class="persona__name"><span lang="es">Optimistas</span><span lang="en">Optimistic</span></span></button>
+            <p class="persona__desc"><span lang="es">Te informamos con calma y claridad: protección que da tranquilidad.</span><span lang="en">We inform you calmly and clearly: protection that brings peace of mind.</span></p>
+          </li>
+          <li class="persona__item">
+            <button class="persona__btn" type="button" aria-pressed="false"><span class="persona__num">06</span><span class="persona__name"><span lang="es">Directos</span><span lang="en">Direct</span></span></button>
+            <p class="persona__desc"><span lang="es">Respuestas claras y honestas, siempre con calidez.</span><span lang="en">Clear, honest answers, always with warmth.</span></p>
+          </li>
+        </ol>
+        <div class="persona__panel" aria-live="polite">
+          <svg class="persona__leaf" viewBox="522 -8 100 116" aria-hidden="true" focusable="false"><defs><linearGradient id="persona-gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#DDBF5C"/><stop offset=".5" stop-color="#C9A227"/><stop offset="1" stop-color="#9E7E1B"/></linearGradient></defs><path fill="url(#persona-gold)" d="M548.33 100.13C529.38 37.1 576.92 34.12 612.82 0C615.11 29.67 600.22 48.55 576.6 64.49L588.94 44.78C572.35 60.92 557.09 78.53 548.33 100.13Z"/></svg>
+          <span class="persona__panel-num" aria-hidden="true">01</span>
+          <p class="persona__panel-kicker"><span lang="es">Así te atendemos</span><span lang="en">How we serve you</span></p>
+          <p class="persona__panel-title"><span lang="es">Sólidos</span><span lang="en">Solid</span></p>
+          <p class="persona__panel-desc"><span lang="es">Respaldo firme y procesos claros, con la flexibilidad que cada caso necesita.</span><span lang="en">Firm support and clear processes, with the flexibility every case needs.</span></p>
+          <div class="persona__progress" aria-hidden="true"><span></span></div>
+        </div>
+      </div>
     </div>
   </section>
 
