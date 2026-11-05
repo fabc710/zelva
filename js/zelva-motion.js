@@ -103,7 +103,7 @@
             { clipPath: "polygon(100% 100%, 100% 100%, 100% 100%)" },
             { clipPath: "polygon(100% 100%, -100% 100%, 100% -100%)", duration: 1.8, ease: "power2.inOut", clearProps: "clipPath" }, 0);
         }
-        var heroBg = hero.querySelector(".hero-photo__bg img");
+        var heroBg = hero.querySelector(".hero-photo__bg img, .hero-photo__bg video");
         if (heroBg) tl.fromTo(heroBg, { scale: 1.14 }, { scale: 1, duration: 2.8, ease: "power2.out" }, 0);
         if (first.length) tl.fromTo(first, { opacity: 0, y: 14 }, { opacity: 1, y: 0, stagger: 0.08 }, 0.1);
         if (h1) {
@@ -201,7 +201,7 @@
     }
 
     /* ---------- Contacto: fondo con parallax y línea de pasos ---------- */
-    var contactBg = d.querySelector(".hero-photo__bg img");
+    var contactBg = d.querySelector(".hero-photo__bg img, .hero-photo__bg video");
     if (contactBg && c.desktop) {
       gsap.to(contactBg, { yPercent: 8, ease: "none", scrollTrigger: { trigger: contactBg.closest("section"), start: "top top", end: "bottom top", scrub: true } });
     }

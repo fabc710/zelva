@@ -564,6 +564,38 @@
     });
   });
 
+  /* ---------- Video de fondo de la portada (inicio) ----------------- */
+  var heroVideo = d.querySelector(".hero-video");
+  if (heroVideo) {
+    var videoBtn = d.querySelector(".hero-video__toggle");
+    var conn = navigator.connection || {};
+    // En celulares, con "ahorro de datos" o con "reducir movimiento" se queda la imagen fija
+    var canPlay = !reduceMotion && !conn.saveData && window.matchMedia("(min-width: 768px)").matches;
+    if (canPlay) {
+      var userPaused = false;
+      heroVideo.src = heroVideo.getAttribute("data-src");
+      heroVideo.preload = "auto";
+      var playVideo = function () { var pr = heroVideo.play(); if (pr && pr.catch) pr.catch(function () { /* el navegador no permitió reproducir */ }); };
+      heroVideo.addEventListener("playing", function () { if (videoBtn) videoBtn.hidden = false; });
+      // Solo se reproduce mientras la portada está a la vista
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver(function (entries) {
+          if (entries[0].isIntersecting) { if (!userPaused) playVideo(); } else { heroVideo.pause(); }
+        }, { threshold: 0.1 }).observe(heroVideo);
+      } else {
+        playVideo();
+      }
+      if (videoBtn) {
+        videoBtn.addEventListener("click", function () {
+          userPaused = !heroVideo.paused;
+          if (userPaused) heroVideo.pause(); else playVideo();
+          videoBtn.setAttribute("aria-pressed", String(userPaused));
+          videoBtn.querySelector("i").className = userPaused ? "ri-play-line" : "ri-pause-line";
+        });
+      }
+    }
+  }
+
   /* ---------- Animaciones de entrada --------------------------------- */
   // Con GSAP disponible, js/zelva-motion.js se encarga; esto es el respaldo.
   var reveal = window.gsap && window.ScrollTrigger ? [] : d.querySelectorAll("[data-reveal]");
