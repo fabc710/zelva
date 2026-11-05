@@ -9,12 +9,12 @@
 
   var d = document;
   var root = d.documentElement;
-  var LANG_KEY = "zelva-lang";
+  var LANG_KEY = "zelva-lang-v2"; // v2: el inglés pasó a ser el idioma por defecto
 
   /* ---------- Idioma ------------------------------------------------- */
   var ATTRS = ["placeholder", "aria-label", "title", "alt", "content"];
 
-  function currentLang() { return root.getAttribute("data-lang") === "en" ? "en" : "es"; }
+  function currentLang() { return root.getAttribute("data-lang") === "es" ? "es" : "en"; }
 
   function applyLang(lang) {
     // Textos simples: <el data-en="English">Español</el>
@@ -39,7 +39,7 @@
   }
 
   function setLang(lang, persist) {
-    lang = lang === "en" ? "en" : "es";
+    lang = lang === "es" ? "es" : "en";
     root.setAttribute("data-lang", lang);
     root.setAttribute("lang", lang);
     applyLang(lang);
