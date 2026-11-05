@@ -569,8 +569,8 @@
   if (heroVideo) {
     var videoBtn = d.querySelector(".hero-video__toggle");
     var conn = navigator.connection || {};
-    // En celulares, con "ahorro de datos" o con "reducir movimiento" se queda la imagen fija
-    var canPlay = !reduceMotion && !conn.saveData && window.matchMedia("(min-width: 768px)").matches;
+    // Con "ahorro de datos" o con "reducir movimiento" se queda la imagen fija
+    var canPlay = !reduceMotion && !conn.saveData;
     if (canPlay) {
       var userPaused = false;
       heroVideo.src = heroVideo.getAttribute("data-src");

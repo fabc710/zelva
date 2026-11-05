@@ -1186,6 +1186,10 @@ fieldset.field { border: 0; margin: 0; padding: 0; }
   .hero-photo::after { background: linear-gradient(180deg, rgba(16, 40, 30, .9) 0%, rgba(27, 67, 50, .86) 60%, rgba(16, 40, 30, .92) 100%); }
   .hero-photo::before { -webkit-mask-image: none; mask-image: none; }
   .hero-photo__bg img { object-position: 70% 30%; }
+  /* Con video: velo más claro arriba para que se vea la escena; oscuro abajo para la lista */
+  .hero-photo--video::after { background: linear-gradient(180deg, rgba(16, 40, 30, .66) 0%, rgba(27, 67, 50, .5) 34%, rgba(16, 40, 30, .62) 62%, rgba(16, 40, 30, .9) 82%, rgba(16, 40, 30, .95) 100%); }
+  .hero-photo--video::before { opacity: .4; }
+  .hero-video__toggle { top: 16px; bottom: auto; width: 36px; height: 36px; font-size: 1rem; }
   .chapters__visual { display: none; }
   .chapters { gap: 0; }
   .js .chapter, .chapter { min-height: 0; padding-block: 28px; opacity: 1; }
