@@ -188,6 +188,25 @@
     Object.keys(map).forEach(function (id) { var s = d.getElementById(id); if (s) spy.observe(s); });
   }
 
+  /* ---------- Historia por capítulos (Nosotros) ---------------------- */
+  d.querySelectorAll("[data-chapters]").forEach(function (wrap) {
+    var chapters = wrap.querySelectorAll("[data-chapter]");
+    var visuals = wrap.querySelectorAll("[data-visual]");
+    var dots = wrap.querySelectorAll(".chapters__dots li");
+    function activate(i) {
+      [chapters, visuals, dots].forEach(function (list) {
+        list.forEach(function (el, j) { el.classList.toggle("is-active", j === i); });
+      });
+    }
+    if (!("IntersectionObserver" in window)) return;
+    var spyChapters = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) activate(Number(en.target.getAttribute("data-chapter")));
+      });
+    }, { rootMargin: "-45% 0px -45% 0px" });
+    chapters.forEach(function (c) { spyChapters.observe(c); });
+  });
+
   /* ---------- Filtros de recursos ------------------------------------ */
   var filters = d.querySelectorAll("[data-filter]");
   filters.forEach(function (btn) {

@@ -21,6 +21,7 @@
   if (!gsap || !ST) { root.classList.remove("intro"); return; }
   gsap.registerPlugin(ST);
   if (Split) gsap.registerPlugin(Split);
+  if (window.DrawSVGPlugin) gsap.registerPlugin(window.DrawSVGPlugin);
   root.classList.add("has-gsap");
 
   var hero = d.querySelector(".hero, .page-hero, .article-hero, .notice");
@@ -82,7 +83,7 @@
 
       var first = q(".breadcrumb, .eyebrow");
       var after = q(".lead, .hero__actions, .page-hero__actions, .legal-meta, .article-meta, .notice__icon, .notice__actions");
-      var media = q(".quote-card, .media-frame, .article-cover");
+      var media = q(".quote-card, .media-frame, .article-cover, .collage__small, .collage__chip");
       var tiles = q(".quote-tile");
       var trust = q(".trust li");
       var diag = hero.querySelector(":scope > .diagonal");
@@ -177,7 +178,7 @@
 
     /* ---------- 4. Parallax leve en fotografías (escritorio) ---------- */
     if (c.desktop) {
-      gsap.utils.toArray(".media-frame__img img").forEach(function (img) {
+      gsap.utils.toArray(".media-frame__img img, .collage__small img").forEach(function (img) {
         gsap.fromTo(img, { yPercent: -4, scale: 1.1 }, {
           yPercent: 4, scale: 1.1, ease: "none",
           scrollTrigger: { trigger: img.parentElement, start: "top bottom", end: "bottom top", scrub: true }
@@ -185,7 +186,17 @@
       });
     }
 
-    /* ---------- 5. Brillo dorado que sigue al cursor (mouse) ---------- */
+    /* ---------- 5. La hoja dorada se dibuja con el scroll (Nosotros) -- */
+    var leaf = d.querySelector(".leaf-art");
+    if (leaf && window.DrawSVGPlugin) {
+      var line = leaf.querySelector(".leaf-art__line");
+      var fill = leaf.querySelector(".leaf-art__fill");
+      gsap.timeline({ scrollTrigger: { trigger: leaf, start: "top 82%", end: "bottom 45%", scrub: 0.8 } })
+        .fromTo(line, { drawSVG: "0%" }, { drawSVG: "100%", ease: "none", duration: 1 })
+        .fromTo(fill, { opacity: 0, scale: 0.92, transformOrigin: "20% 100%" }, { opacity: 1, scale: 1, ease: "power1.out", duration: 0.45 }, 0.75);
+    }
+
+    /* ---------- 6. Brillo dorado que sigue al cursor (mouse) ---------- */
     if (c.pointer) {
       var glowEls = d.querySelectorAll(".quote-tile, .card, .post-card");
       glowEls.forEach(function (el) { el.classList.add("glow"); });

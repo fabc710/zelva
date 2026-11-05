@@ -23,12 +23,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&amp;family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css">
-<link rel="stylesheet" href="css/zelva.css">
+<link rel="stylesheet" href="css/zelva.css?v=cdde0062">
 <script src="js/vendor/gsap/gsap.min.js" defer></script>
 <script src="js/vendor/gsap/ScrollTrigger.min.js" defer></script>
 <script src="js/vendor/gsap/SplitText.min.js" defer></script>
-<script src="js/zelva.js" defer></script>
-<script src="js/zelva-motion.js" defer></script>
+<script src="js/vendor/gsap/DrawSVGPlugin.min.js" defer></script>
+<script src="js/zelva.js?v=7acc6e02" defer></script>
+<script src="js/zelva-motion.js?v=c4a632bf" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#main"><span lang="es">Saltar al contenido</span><span lang="en">Skip to content</span></a>
@@ -126,7 +127,8 @@
 
 <main id="main">
 
-  <section class="page-hero page-hero--split on-dark" aria-labelledby="page-title">
+  <!-- ============================ PORTADA ============================ -->
+  <section class="page-hero page-hero--split on-dark about-hero" aria-labelledby="page-title">
     <div class="diagonal" aria-hidden="true"></div>
     <div class="container">
       <div>
@@ -139,54 +141,111 @@
         <p class="lead"><span lang="es">Somos Zelva Insurance Agency Corp, una agencia de seguros independiente y bilingüe que acompaña a familias y negocios en Estados Unidos, antes, durante y después de cada póliza.</span><span lang="en">We are Zelva Insurance Agency Corp, an independent, bilingual insurance agency that supports families and businesses across the United States, before, during and after every policy.</span></p>
         <div class="page-hero__actions">
           <a class="btn btn--light btn--lg" href="contacto.html"><span lang="es">Habla con nosotros</span><span lang="en">Talk to us</span> <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+          <a class="btn btn--ghost btn--lg" href="#historia"><span lang="es">Nuestra historia</span><span lang="en">Our story</span> <i class="ri-arrow-down-line" aria-hidden="true"></i></a>
         </div>
       </div>
-      <div class="media-frame" data-reveal>
-        <div class="media-frame__img">
-          <img src="assets/images/about-office.webp" alt="Equipo de asesores revisando documentos con clientes" data-en-alt="Team of advisors reviewing documents with clients" width="1536" height="1024" loading="eager">
+
+      <div class="collage">
+        <div class="media-frame collage__main">
+          <div class="media-frame__img">
+            <img src="assets/images/nosotros-equipo.webp" alt="Equipo de Zelva recibiendo a sus clientes en la oficina" data-en-alt="Zelva team welcoming clients at the office" width="1024" height="1280" loading="eager">
+          </div>
         </div>
+        <figure class="collage__small">
+          <img src="assets/images/nosotros-clientes.webp" alt="Agente de Zelva estrechando la mano de un cliente" data-en-alt="Zelva agent shaking hands with a client" width="800" height="800" loading="eager">
+        </figure>
+        <p class="collage__chip"><i class="ri-translate-2" aria-hidden="true"></i> Hablamos español · We speak English</p>
       </div>
     </div>
   </section>
 
-  <!-- HISTORIA -->
-  <section class="section" aria-labelledby="story-title">
-    <div class="container split">
-      <div data-reveal>
-        <p class="wordmark wordmark--ink" aria-hidden="true">
-          <span class="wordmark__from">selva</span>
-          <span class="wordmark__arrow"></span>
-          <span class="wordmark__to"><img src="assets/brand/logo-zelva-mark.svg" alt="" width="810" height="170"></span>
-        </p>
-        <p class="word-note word-note--ink"><strong>želva</strong> <span lang="es">= tortuga, en checo y esloveno</span><span lang="en">= turtle, in Czech and Slovenian</span></p>
-      </div>
-      <div data-reveal data-delay="1">
-        <p class="eyebrow"><span lang="es">Un nombre con raíces</span><span lang="en">A name with roots</span></p>
-        <h2 class="h2" id="story-title"><span lang="es">Zelva es más que un nombre: es una forma de entender la protección.</span><span lang="en">Zelva is more than a name: it's a way of understanding protection.</span></h2>
-        <p><span lang="es">Zelva nace de <em>selva</em>: el ecosistema más rico y resiliente del planeta, donde cada forma de vida encuentra refugio bajo un mismo techo verde. Así entendemos los seguros: un entorno que protege a las familias, sus bienes y sus negocios para que puedan crecer.</span><span lang="en">Zelva comes from <em>selva</em>, Spanish for rainforest: the richest, most resilient ecosystem on the planet, where every form of life finds shelter under the same green canopy. That's how we see insurance: an environment that protects families, their property and their businesses so they can grow.</span></p>
-        <p><span lang="es">Una coincidencia afortunada refuerza la idea: en checo y esloveno, <em>želva</em> significa tortuga, el animal que lleva su escudo consigo y símbolo universal de protección, paciencia y longevidad.</span><span lang="en">A fortunate coincidence reinforces the idea: in Czech and Slovenian, <em>želva</em> means turtle, the animal that carries its shield wherever it goes and a universal symbol of protection, patience and longevity.</span></p>
-        <p><span lang="es">Por eso nuestra hoja dorada nace de la V: la selva que nos da origen y el patrimonio que crece cuando está bien protegido.</span><span lang="en">That's why our golden leaf grows out of the V: the rainforest we come from, and the wealth that grows when it's well protected.</span></p>
-      </div>
-    </div>
-  </section>
-
-  <!-- PROPÓSITO, MISIÓN, VISIÓN -->
-  <section class="section section--tint" aria-labelledby="pmv-title">
+  <!-- ===================== HISTORIA (scroll por capítulos) ===================== -->
+  <section class="section" id="historia" aria-labelledby="story-title">
     <div class="container">
-      <div class="section-head" data-reveal>
-        <p class="eyebrow"><span lang="es">Lo que nos mueve</span><span lang="en">What drives us</span></p>
-        <h2 class="h2" id="pmv-title"><span lang="es">Propósito, misión y visión.</span><span lang="en">Purpose, mission and vision.</span></h2>
+      <div class="section-head section-head--center" data-reveal>
+        <p class="eyebrow eyebrow--center"><span lang="es">Un nombre con raíces</span><span lang="en">A name with roots</span></p>
+        <h2 class="h2" id="story-title"><span lang="es">Zelva es más que un nombre: es una forma de entender la protección.</span><span lang="en">Zelva is more than a name: it's a way of understanding protection.</span></h2>
       </div>
-      <div class="grid-3">
-        <article class="card card--quote" data-reveal>
+
+      <div class="chapters" data-chapters>
+        <div class="chapters__visual" aria-hidden="true">
+          <div class="chapters__frame">
+            <figure class="chapter-visual is-active" data-visual="0"><img src="assets/images/nosotros-selva.webp" alt="" width="1024" height="1024" loading="lazy"></figure>
+            <figure class="chapter-visual" data-visual="1"><img src="assets/images/nosotros-tortuga.webp" alt="" width="1024" height="1024" loading="lazy"></figure>
+            <figure class="chapter-visual chapter-visual--brand" data-visual="2">
+              <img class="chapter-visual__logo" src="assets/brand/logo-zelva-white.svg" alt="" width="810" height="218">
+              <span class="chapter-visual__word">selva <i class="ri-arrow-right-line"></i> želva <i class="ri-arrow-right-line"></i> Zelva</span>
+            </figure>
+            <span class="diagonal diagonal--lines"></span>
+          </div>
+          <ol class="chapters__dots">
+            <li class="is-active">01 · selva</li>
+            <li>02 · želva</li>
+            <li>03 · Zelva</li>
+          </ol>
+        </div>
+
+        <div class="chapters__steps">
+          <article class="chapter is-active" data-chapter="0">
+            <figure class="chapter__media"><img src="assets/images/nosotros-selva.webp" alt="Selva tropical con luz dorada entre los árboles" data-en-alt="Rainforest with golden light through the trees" width="1024" height="1024" loading="lazy"></figure>
+            <p class="chapter__num">01 · selva</p>
+            <h3 class="chapter__title"><span lang="es">Nace de la selva.</span><span lang="en">Born in the rainforest.</span></h3>
+            <p><span lang="es">Zelva nace de <em>selva</em>: el ecosistema más rico y resiliente del planeta, donde cada forma de vida encuentra refugio bajo un mismo techo verde.</span><span lang="en">Zelva comes from <em>selva</em>, Spanish for rainforest: the richest, most resilient ecosystem on the planet, where every form of life finds shelter under the same green canopy.</span></p>
+            <p><span lang="es">Así entendemos los seguros: un entorno que protege a las familias, sus bienes y sus negocios para que puedan crecer.</span><span lang="en">That's how we see insurance: an environment that protects families, their property and their businesses so they can grow.</span></p>
+          </article>
+          <article class="chapter" data-chapter="1">
+            <figure class="chapter__media"><img src="assets/images/nosotros-tortuga.webp" alt="Tortuga marina nadando en aguas claras" data-en-alt="Sea turtle swimming in clear water" width="1024" height="1024" loading="lazy"></figure>
+            <p class="chapter__num">02 · želva</p>
+            <h3 class="chapter__title"><span lang="es">Un escudo que va contigo.</span><span lang="en">A shield that goes with you.</span></h3>
+            <p><span lang="es">Una coincidencia afortunada refuerza la idea: en checo y esloveno, <em>želva</em> significa tortuga, el animal que lleva su escudo consigo.</span><span lang="en">A fortunate coincidence reinforces the idea: in Czech and Slovenian, <em>želva</em> means turtle, the animal that carries its shield wherever it goes.</span></p>
+            <p><span lang="es">Es un símbolo universal de protección, paciencia y longevidad: justo lo que queremos ser para nuestros clientes.</span><span lang="en">It's a universal symbol of protection, patience and longevity: exactly what we want to be for our clients.</span></p>
+          </article>
+          <article class="chapter" data-chapter="2">
+            <figure class="chapter__media chapter-visual--brand"><img class="chapter-visual__logo" src="assets/brand/logo-zelva-white.svg" alt="Zelva Insurance Agency Corp" width="810" height="218" loading="lazy"></figure>
+            <p class="chapter__num">03 · Zelva</p>
+            <h3 class="chapter__title"><span lang="es">Una marca que crece contigo.</span><span lang="en">A brand that grows with you.</span></h3>
+            <p><span lang="es">Nuestra Z, de barras firmes, expresa estructura y solidez; su diagonal, movimiento hacia adelante. La hoja dorada nace de la V: la selva que nos da origen y el patrimonio que crece cuando está bien protegido.</span><span lang="en">Our Z, with its solid bars, expresses structure and strength; its diagonal, forward movement. The golden leaf grows out of the V: the rainforest we come from and the wealth that grows when it's well protected.</span></p>
+            <p><span lang="es">Y el trazo de la V recuerda el signo ✓ de lo verificado y protegido.</span><span lang="en">And the stroke of the V echoes the ✓ of what is verified and protected.</span></p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PROMESA + PROPÓSITO, MISIÓN, VISIÓN ===================== -->
+  <section class="section section--tint promise-band" aria-labelledby="pmv-title">
+    <div class="container">
+      <div class="promise-band__top">
+        <div class="leaf-art" aria-hidden="true">
+          <svg viewBox="522 -8 100 116" focusable="false">
+            <defs>
+              <linearGradient id="leaf-gold" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#DDBF5C"/>
+                <stop offset=".5" stop-color="#C9A227"/>
+                <stop offset="1" stop-color="#9E7E1B"/>
+              </linearGradient>
+            </defs>
+            <path class="leaf-art__fill" fill="url(#leaf-gold)" d="M548.33 100.13C529.38 37.1 576.92 34.12 612.82 0C615.11 29.67 600.22 48.55 576.6 64.49L588.94 44.78C572.35 60.92 557.09 78.53 548.33 100.13Z"/>
+            <path class="leaf-art__line" d="M548.33 100.13C529.38 37.1 576.92 34.12 612.82 0C615.11 29.67 600.22 48.55 576.6 64.49L588.94 44.78C572.35 60.92 557.09 78.53 548.33 100.13Z"/>
+          </svg>
+        </div>
+        <div data-reveal>
+          <p class="eyebrow"><span lang="es">Promesa de marca</span><span lang="en">Brand promise</span></p>
+          <h2 class="display promise-band__title" id="pmv-title"><span lang="es">Protección que crece contigo.</span><span lang="en">Protection that grows with you.</span></h2>
+          <p class="promise-band__alt"><span lang="es">Protection that grows with you</span><span lang="en">Protección que crece contigo</span></p>
+        </div>
+      </div>
+
+      <div class="pmv">
+        <article class="pmv__item" data-reveal>
           <p class="card__kicker"><span lang="es">Propósito</span><span lang="en">Purpose</span></p>
           <p><span lang="es">Proteger lo que más importa a nuestros clientes —su familia, su patrimonio y su tranquilidad— con asesoría clara, honesta y cercana.</span><span lang="en">To protect what matters most to our clients (their family, their assets and their peace of mind) with clear, honest and personal advice.</span></p>
         </article>
-        <article class="card card--quote" data-reveal data-delay="1">
+        <article class="pmv__item" data-reveal>
           <p class="card__kicker"><span lang="es">Misión</span><span lang="en">Mission</span></p>
           <p><span lang="es">Encontrar para cada cliente la cobertura correcta al mejor valor, y acompañarlo antes, durante y después de cada póliza.</span><span lang="en">To find the right coverage at the best value for every client, and to stand by them before, during and after every policy.</span></p>
         </article>
-        <article class="card card--quote" data-reveal data-delay="2">
+        <article class="pmv__item" data-reveal>
           <p class="card__kicker"><span lang="es">Visión</span><span lang="en">Vision</span></p>
           <p><span lang="es">Ser la agencia de seguros de referencia para familias y negocios en Estados Unidos, reconocida por su servicio bilingüe, su transparencia y su respaldo.</span><span lang="en">To be the go-to insurance agency for families and businesses in the United States, known for bilingual service, transparency and support.</span></p>
         </article>
@@ -194,34 +253,34 @@
     </div>
   </section>
 
-  <!-- VALORES -->
+  <!-- ============================== VALORES ============================== -->
   <section class="section" aria-labelledby="values-title">
     <div class="container">
       <div class="section-head section-head--split" data-reveal>
         <div>
           <p class="eyebrow"><span lang="es">Valores</span><span lang="en">Values</span></p>
-          <h2 class="h2" id="values-title"><span lang="es">Cuatro valores, una promesa: protección que crece contigo.</span><span lang="en">Four values, one promise: protection that grows with you.</span></h2>
+          <h2 class="h2" id="values-title"><span lang="es">Cuatro valores que guían cada póliza.</span><span lang="en">Four values behind every policy.</span></h2>
         </div>
         <p class="lead"><span lang="es">Guían cada conversación, cada recomendación y cada póliza que colocamos.</span><span lang="en">They guide every conversation, every recommendation and every policy we place.</span></p>
       </div>
       <div class="grid-4">
         <article class="value" data-reveal>
-          <span class="value__num">01</span>
+          <div class="value__top"><span class="value__num">01</span><svg class="bi" aria-hidden="true" focusable="false"><use href="assets/brand/icons.svg#i-umbrella"></use></svg></div>
           <h3><span lang="es">Protección</span><span lang="en">Protection</span></h3>
           <p><span lang="es">Anticipamos riesgos y respondemos cuando más se nos necesita.</span><span lang="en">We anticipate risks and respond when we're needed most.</span></p>
         </article>
-        <article class="value" data-reveal data-delay="1">
-          <span class="value__num">02</span>
+        <article class="value" data-reveal>
+          <div class="value__top"><span class="value__num">02</span><svg class="bi" aria-hidden="true" focusable="false"><use href="assets/brand/icons.svg#i-poliza"></use></svg></div>
           <h3><span lang="es">Confianza</span><span lang="en">Trust</span></h3>
           <p><span lang="es">Hablamos claro: sin letra pequeña y sin sorpresas.</span><span lang="en">We speak plainly: no fine print, no surprises.</span></p>
         </article>
-        <article class="value" data-reveal data-delay="2">
-          <span class="value__num">03</span>
+        <article class="value" data-reveal>
+          <div class="value__top"><span class="value__num">03</span><svg class="bi" aria-hidden="true" focusable="false"><use href="assets/brand/icons.svg#i-asesoria"></use></svg></div>
           <h3><span lang="es">Cercanía</span><span lang="en">Closeness</span></h3>
           <p><span lang="es">Atendemos en español e inglés, con trato humano y personal.</span><span lang="en">We serve you in English and Spanish, with a human, personal touch.</span></p>
         </article>
-        <article class="value" data-reveal data-delay="3">
-          <span class="value__num">04</span>
+        <article class="value" data-reveal>
+          <div class="value__top"><span class="value__num">04</span><svg class="bi" aria-hidden="true" focusable="false"><use href="assets/brand/icons.svg#i-vida"></use></svg></div>
           <h3><span lang="es">Crecimiento</span><span lang="en">Growth</span></h3>
           <p><span lang="es">Acompañamos cada etapa de la vida y del negocio de nuestros clientes.</span><span lang="en">We support every stage of our clients' lives and businesses.</span></p>
         </article>
@@ -229,8 +288,14 @@
     </div>
   </section>
 
-  <!-- PERSONALIDAD -->
-  <section class="section section--dark on-dark" aria-labelledby="traits-title">
+  <!-- ===================== PERSONALIDAD + FRANJA EN MOVIMIENTO ===================== -->
+  <section class="section section--dark on-dark traits-section" aria-labelledby="traits-title">
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span class="marquee__item"><span lang="es">Protección</span><span lang="en">Protection</span></span><span class="marquee__item"><span lang="es">Confianza</span><span lang="en">Trust</span></span><span class="marquee__item"><span lang="es">Cercanía</span><span lang="en">Closeness</span></span><span class="marquee__item"><span lang="es">Crecimiento</span><span lang="en">Growth</span></span>
+        <span class="marquee__item"><span lang="es">Protección</span><span lang="en">Protection</span></span><span class="marquee__item"><span lang="es">Confianza</span><span lang="en">Trust</span></span><span class="marquee__item"><span lang="es">Cercanía</span><span lang="en">Closeness</span></span><span class="marquee__item"><span lang="es">Crecimiento</span><span lang="en">Growth</span></span>
+      </div>
+    </div>
     <div class="diagonal" aria-hidden="true"></div>
     <div class="container">
       <div class="section-head" data-reveal>
@@ -248,7 +313,7 @@
     </div>
   </section>
 
-  <!-- SERVICIOS -->
+  <!-- ============================== SERVICIOS ============================== -->
   <section class="section" aria-labelledby="services-title">
     <div class="container">
       <div class="section-head section-head--center" data-reveal>
@@ -261,12 +326,12 @@
           <h3><span lang="es">Asesoría gratuita</span><span lang="en">Free consultation</span></h3>
           <p><span lang="es">Primero escuchamos y luego recomendamos. En persona, por teléfono o por videollamada, sin presión de venta.</span><span lang="en">We listen first, then recommend. In person, by phone or by video call, with no sales pressure.</span></p>
         </article>
-        <article class="card" data-reveal data-delay="1">
+        <article class="card" data-reveal>
           <span class="card__ico"><i class="ri-scales-3-line" aria-hidden="true"></i></span>
           <h3><span lang="es">Comparación de aseguradoras</span><span lang="en">Carrier comparison</span></h3>
           <p><span lang="es">Cotizamos con varias compañías y te presentamos las opciones lado a lado, en lenguaje claro.</span><span lang="en">We quote with several companies and show you the options side by side, in plain language.</span></p>
         </article>
-        <article class="card" data-reveal data-delay="2">
+        <article class="card" data-reveal>
           <span class="card__ico"><i class="ri-calendar-check-line" aria-hidden="true"></i></span>
           <h3><span lang="es">Revisión anual</span><span lang="en">Annual review</span></h3>
           <p><span lang="es">Revisamos tus pólizas cada año para cerrar brechas de cobertura y buscar ahorros.</span><span lang="en">We review your policies every year to close coverage gaps and look for savings.</span></p>
@@ -276,12 +341,12 @@
           <h3><span lang="es">Apoyo en reclamos</span><span lang="en">Claims support</span></h3>
           <p><span lang="es">Te guiamos paso a paso, te ayudamos a documentar la pérdida y damos seguimiento con la aseguradora.</span><span lang="en">We guide you step by step, help you document the loss and follow up with the carrier.</span></p>
         </article>
-        <article class="card" data-reveal data-delay="1">
+        <article class="card" data-reveal>
           <span class="card__ico"><i class="ri-briefcase-4-line" aria-hidden="true"></i></span>
           <h3><span lang="es">Riesgos para negocios</span><span lang="en">Business risk review</span></h3>
           <p><span lang="es">Identificamos los riesgos de tu operación y diseñamos un programa de seguros a la medida.</span><span lang="en">We identify the risks in your operation and design a tailored insurance program.</span></p>
         </article>
-        <article class="card" data-reveal data-delay="2">
+        <article class="card" data-reveal>
           <span class="card__ico"><i class="ri-refresh-line" aria-hidden="true"></i></span>
           <h3><span lang="es">Gestión de renovaciones</span><span lang="en">Renewal management</span></h3>
           <p><span lang="es">Damos seguimiento a tus fechas de renovación para que nunca te quedes sin cobertura.</span><span lang="en">We track your renewal dates so you're never left without coverage.</span></p>
@@ -290,7 +355,7 @@
     </div>
   </section>
 
-  <!-- PROCESO -->
+  <!-- ============================== PROCESO ============================== -->
   <section class="section section--tint" aria-labelledby="process-title">
     <div class="container">
       <div class="section-head section-head--center" data-reveal>
@@ -303,17 +368,17 @@
           <h3><span lang="es">Escuchamos</span><span lang="en">We listen</span></h3>
           <p><span lang="es">Conversamos sobre tu familia, tus bienes o tu negocio para entender qué necesitas proteger.</span><span lang="en">We talk about your family, your property or your business to understand what you need to protect.</span></p>
         </li>
-        <li class="step" data-reveal data-delay="1">
+        <li class="step" data-reveal>
           <span class="step__num">02</span>
           <h3><span lang="es">Comparamos</span><span lang="en">We compare</span></h3>
           <p><span lang="es">Como agencia independiente, revisamos opciones de varias aseguradoras para ti.</span><span lang="en">As an independent agency, we review options from multiple carriers for you.</span></p>
         </li>
-        <li class="step" data-reveal data-delay="2">
+        <li class="step" data-reveal>
           <span class="step__num">03</span>
           <h3><span lang="es">Te explicamos</span><span lang="en">We explain</span></h3>
           <p><span lang="es">Te presentamos las alternativas en lenguaje claro: qué cubre, qué no y cuánto cuesta.</span><span lang="en">We present your options in plain language: what's covered, what isn't and what it costs.</span></p>
         </li>
-        <li class="step" data-reveal data-delay="3">
+        <li class="step" data-reveal>
           <span class="step__num">04</span>
           <h3><span lang="es">Te acompañamos</span><span lang="en">We stay with you</span></h3>
           <p><span lang="es">Cambios, renovaciones y reclamos: seguimos a tu lado mucho después de firmar.</span><span lang="en">Changes, renewals and claims: we're by your side long after you sign.</span></p>
