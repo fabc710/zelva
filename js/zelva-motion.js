@@ -103,7 +103,7 @@
             { clipPath: "polygon(100% 100%, 100% 100%, 100% 100%)" },
             { clipPath: "polygon(100% 100%, -100% 100%, 100% -100%)", duration: 1.8, ease: "power2.inOut", clearProps: "clipPath" }, 0);
         }
-        var heroBg = hero.querySelector(".contact-hero__bg img");
+        var heroBg = hero.querySelector(".hero-photo__bg img");
         if (heroBg) tl.fromTo(heroBg, { scale: 1.14 }, { scale: 1, duration: 2.8, ease: "power2.out" }, 0);
         if (first.length) tl.fromTo(first, { opacity: 0, y: 14 }, { opacity: 1, y: 0, stagger: 0.08 }, 0.1);
         if (h1) {
@@ -201,12 +201,21 @@
     }
 
     /* ---------- Contacto: fondo con parallax y línea de pasos ---------- */
-    var contactBg = d.querySelector(".contact-hero__bg img");
+    var contactBg = d.querySelector(".hero-photo__bg img");
     if (contactBg && c.desktop) {
       gsap.to(contactBg, { yPercent: 8, ease: "none", scrollTrigger: { trigger: contactBg.closest("section"), start: "top top", end: "bottom top", scrub: true } });
     }
     gsap.utils.toArray(".next-card .next-steps").forEach(function (list) {
       gsap.fromTo(list, { "--line": 0 }, { "--line": 1, ease: "none", scrollTrigger: { trigger: list, start: "top 82%", end: "bottom 60%", scrub: 0.6 } });
+    });
+
+    /* ---------- Nosotros: cada rasgo se ubica en su punto justo ------- */
+    gsap.utils.toArray(".spectrum__row").forEach(function (row, i) {
+      var target = parseFloat(row.style.getPropertyValue("--k")) || 0.3;
+      gsap.fromTo(row, { "--k": 0.5 }, {
+        "--k": target, duration: 1.3, ease: "power3.out", delay: i * 0.08,
+        scrollTrigger: { trigger: row, start: "top 90%", once: true }
+      });
     });
 
     /* ---------- 6. Etapas de la vida: scroll horizontal fijado -------- */

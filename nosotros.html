@@ -23,13 +23,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&amp;family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css">
-<link rel="stylesheet" href="css/zelva.css?v=a19e73ef">
+<link rel="stylesheet" href="css/zelva.css?v=e2f747fa">
 <script src="js/vendor/gsap/gsap.min.js" defer></script>
 <script src="js/vendor/gsap/ScrollTrigger.min.js" defer></script>
 <script src="js/vendor/gsap/SplitText.min.js" defer></script>
 <script src="js/vendor/gsap/DrawSVGPlugin.min.js" defer></script>
 <script src="js/zelva.js?v=9df5d7d2" defer></script>
-<script src="js/zelva-motion.js?v=b2e5171b" defer></script>
+<script src="js/zelva-motion.js?v=5704e380" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#main"><span lang="es">Saltar al contenido</span><span lang="en">Skip to content</span></a>
@@ -128,7 +128,10 @@
 <main id="main">
 
   <!-- ============================ PORTADA ============================ -->
-  <section class="page-hero page-hero--split on-dark about-hero" aria-labelledby="page-title">
+  <section class="page-hero page-hero--split hero-photo hero-photo--soft on-dark about-hero" aria-labelledby="page-title">
+    <div class="hero-photo__bg" aria-hidden="true">
+      <img src="assets/images/nosotros-hero.webp" alt="" width="1536" height="1024" loading="eager" fetchpriority="high" style="object-position: 60% 40%">
+    </div>
     <div class="diagonal" aria-hidden="true"></div>
     <div class="container">
       <div>
@@ -297,19 +300,78 @@
       </div>
     </div>
     <div class="diagonal" aria-hidden="true"></div>
-    <div class="container">
-      <div class="section-head" data-reveal>
+    <div class="container traits-layout">
+      <div class="section-head traits-layout__head" data-reveal>
         <p class="eyebrow"><span lang="es">Cómo somos</span><span lang="en">Who we are</span></p>
         <h2 class="h2" id="traits-title"><span lang="es">El equilibrio que nos define.</span><span lang="en">The balance that defines us.</span></h2>
+        <p class="lead"><span lang="es">Nuestra personalidad es un punto justo: firmes en lo importante, cercanos en todo lo demás.</span><span lang="en">Our personality is about balance: firm on what matters, approachable in everything else.</span></p>
+        <ul class="traits-legend">
+          <li><span class="traits-legend__dot"></span><span lang="es">Donde estamos</span><span lang="en">Where we stand</span></li>
+          <li><span class="traits-legend__dot traits-legend__dot--muted"></span><span lang="es">Lo que evitamos</span><span lang="en">What we avoid</span></li>
+        </ul>
       </div>
-      <div class="traits" data-reveal>
-        <div class="trait"><strong><span lang="es">Sólidos</span><span lang="en">Solid</span></strong><span><span lang="es">pero no rígidos</span><span lang="en">but not rigid</span></span></div>
-        <div class="trait"><strong><span lang="es">Expertos</span><span lang="en">Expert</span></strong><span><span lang="es">pero no complicados</span><span lang="en">but not complicated</span></span></div>
-        <div class="trait"><strong><span lang="es">Cercanos</span><span lang="en">Approachable</span></strong><span><span lang="es">pero no informales</span><span lang="en">but not casual</span></span></div>
-        <div class="trait"><strong><span lang="es">Elegantes</span><span lang="en">Refined</span></strong><span><span lang="es">pero no ostentosos</span><span lang="en">but not flashy</span></span></div>
-        <div class="trait"><strong><span lang="es">Optimistas</span><span lang="en">Optimistic</span></strong><span><span lang="es">pero no alarmistas</span><span lang="en">but not alarmist</span></span></div>
-        <div class="trait"><strong><span lang="es">Directos</span><span lang="en">Direct</span></strong><span><span lang="es">pero no fríos</span><span lang="en">but not cold</span></span></div>
-      </div>
+      <ul class="spectrum" data-reveal>
+        <li class="spectrum__row" style="--k: .24">
+          <div class="spectrum__labels">
+            <strong><span lang="es">Sólidos</span><span lang="en">Solid</span></strong>
+            <span class="spectrum__neg"><span lang="es">pero no rígidos</span><span lang="en">but not rigid</span></span>
+          </div>
+          <div class="spectrum__track" aria-hidden="true">
+            <span class="spectrum__fill"></span>
+            <span class="spectrum__move"><span class="spectrum__dot"></span></span>
+          </div>
+        </li>
+        <li class="spectrum__row" style="--k: .3">
+          <div class="spectrum__labels">
+            <strong><span lang="es">Expertos</span><span lang="en">Expert</span></strong>
+            <span class="spectrum__neg"><span lang="es">pero no complicados</span><span lang="en">but not complicated</span></span>
+          </div>
+          <div class="spectrum__track" aria-hidden="true">
+            <span class="spectrum__fill"></span>
+            <span class="spectrum__move"><span class="spectrum__dot"></span></span>
+          </div>
+        </li>
+        <li class="spectrum__row" style="--k: .34">
+          <div class="spectrum__labels">
+            <strong><span lang="es">Cercanos</span><span lang="en">Approachable</span></strong>
+            <span class="spectrum__neg"><span lang="es">pero no informales</span><span lang="en">but not casual</span></span>
+          </div>
+          <div class="spectrum__track" aria-hidden="true">
+            <span class="spectrum__fill"></span>
+            <span class="spectrum__move"><span class="spectrum__dot"></span></span>
+          </div>
+        </li>
+        <li class="spectrum__row" style="--k: .28">
+          <div class="spectrum__labels">
+            <strong><span lang="es">Elegantes</span><span lang="en">Refined</span></strong>
+            <span class="spectrum__neg"><span lang="es">pero no ostentosos</span><span lang="en">but not flashy</span></span>
+          </div>
+          <div class="spectrum__track" aria-hidden="true">
+            <span class="spectrum__fill"></span>
+            <span class="spectrum__move"><span class="spectrum__dot"></span></span>
+          </div>
+        </li>
+        <li class="spectrum__row" style="--k: .22">
+          <div class="spectrum__labels">
+            <strong><span lang="es">Optimistas</span><span lang="en">Optimistic</span></strong>
+            <span class="spectrum__neg"><span lang="es">pero no alarmistas</span><span lang="en">but not alarmist</span></span>
+          </div>
+          <div class="spectrum__track" aria-hidden="true">
+            <span class="spectrum__fill"></span>
+            <span class="spectrum__move"><span class="spectrum__dot"></span></span>
+          </div>
+        </li>
+        <li class="spectrum__row" style="--k: .32">
+          <div class="spectrum__labels">
+            <strong><span lang="es">Directos</span><span lang="en">Direct</span></strong>
+            <span class="spectrum__neg"><span lang="es">pero no fríos</span><span lang="en">but not cold</span></span>
+          </div>
+          <div class="spectrum__track" aria-hidden="true">
+            <span class="spectrum__fill"></span>
+            <span class="spectrum__move"><span class="spectrum__dot"></span></span>
+          </div>
+        </li>
+      </ul>
     </div>
   </section>
 
