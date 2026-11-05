@@ -23,12 +23,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&amp;family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css">
-<link rel="stylesheet" href="css/zelva.css?v=cdde0062">
+<link rel="stylesheet" href="css/zelva.css?v=85e5974b">
 <script src="js/vendor/gsap/gsap.min.js" defer></script>
 <script src="js/vendor/gsap/ScrollTrigger.min.js" defer></script>
 <script src="js/vendor/gsap/SplitText.min.js" defer></script>
-<script src="js/zelva.js?v=7acc6e02" defer></script>
-<script src="js/zelva-motion.js?v=c4a632bf" defer></script>
+<script src="js/vendor/gsap/Flip.min.js" defer></script>
+<script src="js/zelva.js?v=35ed7ab8" defer></script>
+<script src="js/zelva-motion.js?v=9593a017" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#main"><span lang="es">Saltar al contenido</span><span lang="en">Skip to content</span></a>
@@ -126,40 +127,96 @@
 
 <main id="main">
 
-  <section class="page-hero on-dark" aria-labelledby="page-title">
+  <!-- ============================ PORTADA ============================ -->
+  <section class="page-hero page-hero--split on-dark resources-hero" aria-labelledby="page-title">
     <div class="diagonal" aria-hidden="true"></div>
     <div class="container">
-      <ol class="breadcrumb">
-        <li><a href="index.html"><span lang="es">Inicio</span><span lang="en">Home</span></a></li>
-        <li aria-current="page"><span lang="es">Recursos</span><span lang="en">Resources</span></li>
-      </ol>
-      <p class="eyebrow"><span lang="es">Recursos</span><span lang="en">Resources</span></p>
-      <h1 class="display" id="page-title"><span lang="es">Información clara para decidir mejor.</span><span lang="en">Clear information to help you decide.</span></h1>
-      <p class="lead"><span lang="es">Guías prácticas escritas por nuestro equipo para que entiendas tu seguro y tomes decisiones con confianza.</span><span lang="en">Practical guides from our team to help you understand your coverage and make decisions with confidence.</span></p>
+      <div>
+        <ol class="breadcrumb">
+          <li><a href="index.html"><span lang="es">Inicio</span><span lang="en">Home</span></a></li>
+          <li aria-current="page"><span lang="es">Recursos</span><span lang="en">Resources</span></li>
+        </ol>
+        <p class="eyebrow"><span lang="es">Recursos</span><span lang="en">Resources</span></p>
+        <h1 class="display" id="page-title"><span lang="es">Información clara para decidir mejor.</span><span lang="en">Clear information to help you decide.</span></h1>
+        <p class="lead"><span lang="es">Guías prácticas, consejos para cada etapa de tu vida y un glosario para que entiendas tu seguro y decidas con confianza.</span><span lang="en">Practical guides, tips for every stage of your life and a glossary to help you understand your coverage and decide with confidence.</span></p>
+        <form class="rsearch" role="search" action="#guias">
+          <i class="ri-search-line" aria-hidden="true"></i>
+          <label class="sr-only" for="rsearch"><span lang="es">Buscar en recursos</span><span lang="en">Search resources</span></label>
+          <input id="rsearch" type="search" autocomplete="off" placeholder="Busca una guía o un término…" data-en-placeholder="Search a guide or a term…">
+          <button class="btn btn--sm" type="submit"><span lang="es">Buscar</span><span lang="en">Search</span></button>
+        </form>
+        <p class="rsearch__hint"><span lang="es">Prueba con: deducible, vida, camiones</span><span lang="en">Try: deductible, life, trucks</span></p>
+      </div>
+
+      <aside class="term-card" data-term-rotator aria-label="Término del día" data-en-aria-label="Term of the day">
+        <p class="term-card__kicker"><i class="ri-book-open-line" aria-hidden="true"></i> <span lang="es">¿Sabías qué significa…?</span><span lang="en">Do you know what this means?</span></p>
+        <div class="term-card__stage" aria-live="polite">
+          <div class="term-card__item is-active">
+            <p class="term-card__term"><span lang="es">Deducible</span><span lang="en">Deductible</span></p>
+            <p><span lang="es">Lo que pagas de tu bolsillo antes de que el seguro cubra un reclamo. A mayor deducible, menor prima.</span><span lang="en">What you pay out of pocket before insurance covers a claim. A higher deductible means a lower premium.</span></p>
+          </div>
+          <div class="term-card__item">
+            <p class="term-card__term"><span lang="es">Prima</span><span lang="en">Premium</span></p>
+            <p><span lang="es">El precio de tu seguro: lo que pagas cada mes o cada año para mantener tu póliza activa.</span><span lang="en">The price of your coverage: what you pay monthly or yearly to keep your policy active.</span></p>
+          </div>
+          <div class="term-card__item">
+            <p class="term-card__term"><span lang="es">Responsabilidad civil</span><span lang="en">Liability</span></p>
+            <p><span lang="es">Te protege si causas daños o lesiones a otras personas o a su propiedad.</span><span lang="en">Protects you if you cause damage or injury to other people or their property.</span></p>
+          </div>
+          <div class="term-card__item">
+            <p class="term-card__term"><span lang="es">Beneficiario</span><span lang="en">Beneficiary</span></p>
+            <p><span lang="es">La persona que recibe el pago de un seguro de vida. Revísalo cuando tu vida cambie.</span><span lang="en">The person who receives a life insurance payout. Review it whenever your life changes.</span></p>
+          </div>
+          <div class="term-card__item">
+            <p class="term-card__term"><span lang="es">Exclusión</span><span lang="en">Exclusion</span></p>
+            <p><span lang="es">Una situación que tu póliza no cubre. Te las explicamos antes de firmar.</span><span lang="en">A situation your policy doesn't cover. We explain them before you sign.</span></p>
+          </div>
+        </div>
+        <div class="term-card__foot">
+          <div class="term-card__dots" role="group" aria-label="Cambiar término" data-en-aria-label="Change term">
+            <button type="button" aria-label="1" aria-pressed="true"></button><button type="button" aria-label="2" aria-pressed="false"></button><button type="button" aria-label="3" aria-pressed="false"></button><button type="button" aria-label="4" aria-pressed="false"></button><button type="button" aria-label="5" aria-pressed="false"></button>
+          </div>
+          <a class="link-arrow" href="#glosario"><span lang="es">Ver glosario</span><span lang="en">See glossary</span> <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+        </div>
+      </aside>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="list-title">
+  <!-- ============================== GUÍAS ============================== -->
+  <section class="section" id="guias" aria-labelledby="guides-title">
     <div class="container">
-      <h2 class="sr-only" id="list-title"><span lang="es">Artículos</span><span lang="en">Articles</span></h2>
-      <div class="filters" role="group" aria-label="Filtrar por tema" data-en-aria-label="Filter by topic">
-        <button class="filter" type="button" data-filter="all" aria-pressed="true"><span lang="es">Todos</span><span lang="en">All</span></button>
-        <button class="filter" type="button" data-filter="hogar" aria-pressed="false"><span lang="es">Hogar</span><span lang="en">Home</span></button>
-        <button class="filter" type="button" data-filter="vida" aria-pressed="false"><span lang="es">Vida</span><span lang="en">Life</span></button>
-        <button class="filter" type="button" data-filter="comercial" aria-pressed="false"><span lang="es">Comercial</span><span lang="en">Commercial</span></button>
+      <div class="section-head section-head--split" data-reveal>
+        <div>
+          <p class="eyebrow"><span lang="es">Guías prácticas</span><span lang="en">Practical guides</span></p>
+          <h2 class="h2" id="guides-title"><span lang="es">Guías para decidir con calma.</span><span lang="en">Guides to help you decide calmly.</span></h2>
+        </div>
+        <p class="lead"><span lang="es">Escritas por nuestro equipo, en lenguaje claro y con ejemplos reales.</span><span lang="en">Written by our team, in plain language and with real examples.</span></p>
       </div>
-      <div class="grid-3">
-        <article class="post-card" data-cat="hogar" data-reveal>
-          <a class="post-card__media" href="recursos/seguro-de-hogar-pagar-menos.html" tabindex="-1" aria-hidden="true"><img src="assets/images/blog/post-1.webp" alt="" width="1536" height="1024" loading="lazy"></a>
+
+      <div class="topics" role="group" aria-label="Filtrar por tema" data-en-aria-label="Filter by topic">
+        <button class="topic" type="button" data-filter="all" aria-pressed="true"><i class="ri-apps-2-line" aria-hidden="true"></i><span lang="es">Todas</span><span lang="en">All</span> <span class="topic__count">3</span></button>
+        <button class="topic" type="button" data-filter="hogar" aria-pressed="false"><svg class="bi" aria-hidden="true" focusable="false"><use href="assets/brand/icons.svg#i-hogar"></use></svg><span lang="es">Hogar</span><span lang="en">Home</span> <span class="topic__count">1</span></button>
+        <button class="topic" type="button" data-filter="vida" aria-pressed="false"><svg class="bi" aria-hidden="true" focusable="false"><use href="assets/brand/icons.svg#i-vida"></use></svg><span lang="es">Vida</span><span lang="en">Life</span> <span class="topic__count">1</span></button>
+        <button class="topic" type="button" data-filter="comercial" aria-pressed="false"><svg class="bi" aria-hidden="true" focusable="false"><use href="assets/brand/icons.svg#i-comercial"></use></svg><span lang="es">Comercial</span><span lang="en">Commercial</span> <span class="topic__count">1</span></button>
+      </div>
+
+      <div class="guides">
+        <article class="post-card guide guide--wide" data-search data-kind="guide" data-cat="hogar" data-reveal>
+          <a class="post-card__media" href="recursos/seguro-de-hogar-pagar-menos.html" tabindex="-1" aria-hidden="true"><img src="assets/images/guia-hogar.webp" alt="" width="1536" height="1024" loading="lazy"></a>
           <div class="post-card__body">
-            <div class="post-card__meta"><span class="post-card__tag"><span lang="es">Hogar</span><span lang="en">Home</span></span><span><span lang="es">5 min de lectura</span><span lang="en">5 min read</span></span></div>
+            <div class="post-card__meta"><span class="post-card__tag"><span lang="es">Hogar</span><span lang="en">Home</span></span><span><span lang="es">5 min de lectura</span><span lang="en">5 min read</span></span><span class="guide__badge"><span lang="es">Destacada</span><span lang="en">Featured</span></span></div>
             <h3><a href="recursos/seguro-de-hogar-pagar-menos.html"><span lang="es">5 formas de pagar menos por tu seguro de hogar (sin perder protección)</span><span lang="en">5 ways to lower your home insurance premium (without losing coverage)</span></a></h3>
             <p><span lang="es">Combinar pólizas, ajustar el deducible y mejorar la seguridad de tu casa son algunas estrategias que funcionan.</span><span lang="en">Bundling policies, adjusting your deductible and upgrading your home's security are a few strategies that work.</span></p>
+            <ul class="guide__points">
+              <li><span lang="es">Descuentos por multipóliza</span><span lang="en">Multi-policy discounts</span></li>
+              <li><span lang="es">Deducible inteligente</span><span lang="en">A smarter deductible</span></li>
+              <li><span lang="es">Mejoras de seguridad</span><span lang="en">Security upgrades</span></li>
+            </ul>
             <a class="link-arrow" href="recursos/seguro-de-hogar-pagar-menos.html"><span lang="es">Leer guía</span><span lang="en">Read guide</span> <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
           </div>
         </article>
-        <article class="post-card" data-cat="vida" data-reveal data-delay="1">
-          <a class="post-card__media" href="recursos/mitos-del-seguro-de-vida.html" tabindex="-1" aria-hidden="true"><img src="assets/images/hero/hero-life.webp" alt="" width="1536" height="1024" loading="lazy"></a>
+        <article class="post-card guide" data-search data-kind="guide" data-cat="vida" data-reveal>
+          <a class="post-card__media" href="recursos/mitos-del-seguro-de-vida.html" tabindex="-1" aria-hidden="true"><img src="assets/images/guia-vida.webp" alt="" width="1536" height="1024" loading="lazy"></a>
           <div class="post-card__body">
             <div class="post-card__meta"><span class="post-card__tag"><span lang="es">Vida</span><span lang="en">Life</span></span><span><span lang="es">6 min de lectura</span><span lang="en">6 min read</span></span></div>
             <h3><a href="recursos/mitos-del-seguro-de-vida.html"><span lang="es">7 mitos del seguro de vida que te cuestan tranquilidad</span><span lang="en">7 life insurance myths that cost you peace of mind</span></a></h3>
@@ -167,8 +224,8 @@
             <a class="link-arrow" href="recursos/mitos-del-seguro-de-vida.html"><span lang="es">Leer guía</span><span lang="en">Read guide</span> <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
           </div>
         </article>
-        <article class="post-card" data-cat="comercial" data-reveal data-delay="2">
-          <a class="post-card__media" href="recursos/telematica-seguro-de-camiones.html" tabindex="-1" aria-hidden="true"><img src="assets/images/blog/post-truck.webp" alt="" width="1536" height="1024" loading="lazy"></a>
+        <article class="post-card guide" data-search data-kind="guide" data-cat="comercial" data-reveal>
+          <a class="post-card__media" href="recursos/telematica-seguro-de-camiones.html" tabindex="-1" aria-hidden="true"><img src="assets/images/guia-camiones.webp" alt="" width="1536" height="1024" loading="lazy"></a>
           <div class="post-card__body">
             <div class="post-card__meta"><span class="post-card__tag"><span lang="es">Comercial</span><span lang="en">Commercial</span></span><span><span lang="es">6 min de lectura</span><span lang="en">6 min read</span></span></div>
             <h3><a href="recursos/telematica-seguro-de-camiones.html"><span lang="es">Ahorra hasta 10% en el seguro de tu camión con telemática</span><span lang="en">Save up to 10% on truck insurance with telematics</span></a></h3>
@@ -177,20 +234,130 @@
           </div>
         </article>
       </div>
+      <p class="empty-state" data-empty="guide" hidden><i class="ri-search-eye-line" aria-hidden="true"></i> <span lang="es">No encontramos guías con esa búsqueda. Prueba otra palabra o <a href="contacto.html">pregúntale a un agente</a>.</span><span lang="en">We couldn't find guides for that search. Try another word or <a href="contacto.html">ask an agent</a>.</span></p>
     </div>
   </section>
 
+  <!-- ============== ETAPAS DE LA VIDA (scroll horizontal) ============== -->
+  <section class="stages on-dark" id="etapas" aria-labelledby="stages-title" data-stages>
+    <div class="stages__inner">
+      <div class="container stages__head">
+        <div>
+          <p class="eyebrow"><span lang="es">Protección que crece contigo</span><span lang="en">Protection that grows with you</span></p>
+          <h2 class="h2" id="stages-title"><span lang="es">Qué revisar en cada etapa de tu vida.</span><span lang="en">What to review at every stage of your life.</span></h2>
+        </div>
+        <div class="stages__meta">
+          <p><span lang="es">Tu vida cambia; tu seguro también debería hacerlo. Desliza para recorrer las etapas.</span><span lang="en">Your life changes; your coverage should too. Scroll to move through each stage.</span></p>
+          <div class="stages__progress">
+            <span class="stages__count" aria-hidden="true"><b data-stage-current>01</b> / 06</span>
+            <span class="stages__bar" aria-hidden="true"><span data-stage-bar></span></span>
+            <span class="stages__nav">
+              <button type="button" data-stage-nav="-1" aria-label="Etapa anterior" data-en-aria-label="Previous stage"><i class="ri-arrow-left-line" aria-hidden="true"></i></button>
+              <button type="button" data-stage-nav="1" aria-label="Etapa siguiente" data-en-aria-label="Next stage"><i class="ri-arrow-right-line" aria-hidden="true"></i></button>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stages__viewport" tabindex="0" aria-label="Etapas de la vida" data-en-aria-label="Life stages">
+        <ol class="stages__track">
+          <li class="stage">
+            <span class="stage__num" aria-hidden="true">01</span>
+            <svg class="bi" aria-hidden="true" focusable="false"><use href="assets/brand/icons.svg#i-auto"></use></svg>
+            <h3><span lang="es">Tu primer auto</span><span lang="en">Your first car</span></h3>
+            <p><span lang="es">Cumple con la responsabilidad civil de tu estado y, si el auto es financiado, agrega cobertura amplia.</span><span lang="en">Meet your state's liability requirements and, if the car is financed, add full coverage.</span></p>
+            <ul class="stage__chips"><li><span lang="es">Responsabilidad civil</span><span lang="en">Liability</span></li><li><span lang="es">Colisión</span><span lang="en">Collision</span></li><li><span lang="es">Asistencia en carretera</span><span lang="en">Roadside</span></li></ul>
+            <a class="link-arrow" href="seguros.html#auto"><span lang="es">Seguro de auto</span><span lang="en">Auto insurance</span> <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+          </li>
+          <li class="stage">
+            <span class="stage__num" aria-hidden="true">02</span>
+            <svg class="bi" aria-hidden="true" focusable="false"><use href="assets/brand/icons.svg#i-hogar"></use></svg>
+            <h3><span lang="es">Tu primer hogar</span><span lang="en">Your first home</span></h3>
+            <p><span lang="es">Ya sea que rentes o compres, protege tus pertenencias y combina con tu auto para ahorrar.</span><span lang="en">Whether you rent or buy, protect your belongings and bundle with your auto to save.</span></p>
+            <ul class="stage__chips"><li><span lang="es">Inquilino o propietario</span><span lang="en">Renters or homeowners</span></li><li><span lang="es">Multipóliza</span><span lang="en">Bundle</span></li></ul>
+            <a class="link-arrow" href="recursos/seguro-de-hogar-pagar-menos.html"><span lang="es">Leer la guía</span><span lang="en">Read the guide</span> <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+          </li>
+          <li class="stage">
+            <span class="stage__num" aria-hidden="true">03</span>
+            <svg class="bi" aria-hidden="true" focusable="false"><use href="assets/brand/icons.svg#i-vida"></use></svg>
+            <h3><span lang="es">Formar una familia</span><span lang="en">Starting a family</span></h3>
+            <p><span lang="es">Un seguro de vida a término protege el ingreso de tu familia. Revisa también a tus beneficiarios.</span><span lang="en">Term life insurance protects your family's income. Review your beneficiaries too.</span></p>
+            <ul class="stage__chips"><li><span lang="es">Vida a término</span><span lang="en">Term life</span></li><li><span lang="es">Beneficiarios</span><span lang="en">Beneficiaries</span></li></ul>
+            <a class="link-arrow" href="recursos/mitos-del-seguro-de-vida.html"><span lang="es">Leer la guía</span><span lang="en">Read the guide</span> <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+          </li>
+          <li class="stage">
+            <span class="stage__num" aria-hidden="true">04</span>
+            <svg class="bi" aria-hidden="true" focusable="false"><use href="assets/brand/icons.svg#i-salud"></use></svg>
+            <h3><span lang="es">Cuidar tu salud</span><span lang="en">Caring for your health</span></h3>
+            <p><span lang="es">Compara planes en la inscripción abierta y revisa si calificas para ayuda financiera.</span><span lang="en">Compare plans during open enrollment and check whether you qualify for financial help.</span></p>
+            <ul class="stage__chips"><li><span lang="es">Mercado (ACA)</span><span lang="en">Marketplace (ACA)</span></li><li><span lang="es">Dental y visión</span><span lang="en">Dental & vision</span></li></ul>
+            <a class="link-arrow" href="seguros.html#salud"><span lang="es">Seguro de salud</span><span lang="en">Health insurance</span> <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+          </li>
+          <li class="stage">
+            <span class="stage__num" aria-hidden="true">05</span>
+            <svg class="bi" aria-hidden="true" focusable="false"><use href="assets/brand/icons.svg#i-comercial"></use></svg>
+            <h3><span lang="es">Emprender tu negocio</span><span lang="en">Starting your business</span></h3>
+            <p><span lang="es">Protege tu operación, a tus empleados y tus vehículos. Si tienes camiones, la telemática puede ayudarte a ahorrar.</span><span lang="en">Protect your operation, your employees and your vehicles. If you run trucks, telematics can help you save.</span></p>
+            <ul class="stage__chips"><li><span lang="es">Responsabilidad general</span><span lang="en">General liability</span></li><li><span lang="es">Compensación laboral</span><span lang="en">Workers' comp</span></li></ul>
+            <a class="link-arrow" href="recursos/telematica-seguro-de-camiones.html"><span lang="es">Leer la guía</span><span lang="en">Read the guide</span> <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+          </li>
+          <li class="stage">
+            <span class="stage__num" aria-hidden="true">06</span>
+            <svg class="bi" aria-hidden="true" focusable="false"><use href="assets/brand/icons.svg#i-umbrella"></use></svg>
+            <h3><span lang="es">Proteger lo que construiste</span><span lang="en">Protecting what you built</span></h3>
+            <p><span lang="es">Una póliza umbrella amplía tus límites, y la revisión anual mantiene todo al día.</span><span lang="en">An umbrella policy extends your limits, and an annual review keeps everything up to date.</span></p>
+            <ul class="stage__chips"><li>Umbrella</li><li><span lang="es">Revisión anual</span><span lang="en">Annual review</span></li></ul>
+            <a class="link-arrow" href="contacto.html"><span lang="es">Agenda tu revisión</span><span lang="en">Book your review</span> <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== GLOSARIO ============================== -->
+  <section class="section" id="glosario" aria-labelledby="glossary-title">
+    <div class="container">
+      <div class="section-head section-head--split" data-reveal>
+        <div>
+          <p class="eyebrow"><span lang="es">Glosario</span><span lang="en">Glossary</span></p>
+          <h2 class="h2" id="glossary-title"><span lang="es">Tu póliza explicada, sin letra pequeña.</span><span lang="en">Your policy explained, no fine print.</span></h2>
+        </div>
+        <p class="lead"><span lang="es">Los términos que más vas a encontrar, explicados en una frase.</span><span lang="en">The terms you'll see most often, explained in one sentence.</span></p>
+      </div>
+      <div class="glossary" data-reveal>
+        <details class="term" data-search data-kind="term"><summary><span lang="es">Prima</span><span lang="en">Premium</span></summary><p><span lang="es">Lo que pagas por tu seguro, cada mes o cada año, para mantener la póliza activa.</span><span lang="en">What you pay for your insurance, monthly or yearly, to keep the policy active.</span></p></details>
+        <details class="term" data-search data-kind="term"><summary><span lang="es">Deducible</span><span lang="en">Deductible</span></summary><p><span lang="es">Lo que pagas de tu bolsillo antes de que el seguro cubra un reclamo.</span><span lang="en">What you pay out of pocket before insurance covers a claim.</span></p></details>
+        <details class="term" data-search data-kind="term"><summary><span lang="es">Cobertura</span><span lang="en">Coverage</span></summary><p><span lang="es">Lo que tu póliza protege: qué riesgos y en qué situaciones.</span><span lang="en">What your policy protects: which risks and in which situations.</span></p></details>
+        <details class="term" data-search data-kind="term"><summary><span lang="es">Límite de cobertura</span><span lang="en">Coverage limit</span></summary><p><span lang="es">El monto máximo que la aseguradora pagará por un reclamo cubierto.</span><span lang="en">The maximum amount the carrier will pay for a covered claim.</span></p></details>
+        <details class="term" data-search data-kind="term"><summary><span lang="es">Responsabilidad civil</span><span lang="en">Liability</span></summary><p><span lang="es">Te protege si causas daños o lesiones a otras personas o a su propiedad.</span><span lang="en">Protects you if you cause damage or injury to other people or their property.</span></p></details>
+        <details class="term" data-search data-kind="term"><summary><span lang="es">Reclamo</span><span lang="en">Claim</span></summary><p><span lang="es">La solicitud a la aseguradora para que pague una pérdida cubierta por tu póliza.</span><span lang="en">Your request to the carrier to pay for a loss covered by your policy.</span></p></details>
+        <details class="term" data-search data-kind="term"><summary><span lang="es">Beneficiario</span><span lang="en">Beneficiary</span></summary><p><span lang="es">La persona que recibe el pago de un seguro de vida.</span><span lang="en">The person who receives a life insurance payout.</span></p></details>
+        <details class="term" data-search data-kind="term"><summary><span lang="es">Exclusión</span><span lang="en">Exclusion</span></summary><p><span lang="es">Una situación o un riesgo que tu póliza no cubre.</span><span lang="en">A situation or risk your policy doesn't cover.</span></p></details>
+        <details class="term" data-search data-kind="term"><summary><span lang="es">Endoso</span><span lang="en">Endorsement</span></summary><p><span lang="es">Un cambio o una cobertura adicional que se agrega a tu póliza.</span><span lang="en">A change or additional coverage added to your policy.</span></p></details>
+        <details class="term" data-search data-kind="term"><summary><span lang="es">Copago</span><span lang="en">Copay</span></summary><p><span lang="es">Un monto fijo que pagas por un servicio médico, como una consulta.</span><span lang="en">A fixed amount you pay for a medical service, like a doctor visit.</span></p></details>
+        <details class="term" data-search data-kind="term"><summary><span lang="es">Multipóliza</span><span lang="en">Bundle</span></summary><p><span lang="es">Combinar varias pólizas con la misma aseguradora, por ejemplo auto y hogar, para obtener un descuento.</span><span lang="en">Combining several policies with the same carrier, like auto and home, to get a discount.</span></p></details>
+        <details class="term" data-search data-kind="term"><summary><span lang="es">Agente independiente</span><span lang="en">Independent agent</span></summary><p><span lang="es">Un agente que compara varias aseguradoras para encontrar la mejor opción para ti.</span><span lang="en">An agent who compares several carriers to find the best option for you.</span></p></details>
+      </div>
+      <p class="empty-state" data-empty="term" hidden><i class="ri-search-eye-line" aria-hidden="true"></i> <span lang="es">No hay términos con esa búsqueda.</span><span lang="en">No terms match that search.</span></p>
+    </div>
+  </section>
+
+  <!-- ============================== CIERRE ============================== -->
   <section class="section section--flush" aria-labelledby="cta-title">
     <div class="container">
-      <div class="cta on-dark" data-reveal>
-        <div class="diagonal" aria-hidden="true"></div>
-        <div>
+      <div class="cta cta--media on-dark" data-reveal>
+        <div class="cta__content">
           <p class="eyebrow"><span lang="es">¿Tienes una pregunta?</span><span lang="en">Have a question?</span></p>
-          <h2 class="h2" id="cta-title"><span lang="es">Tu póliza explicada, sin letra pequeña.</span><span lang="en">Your policy explained, no fine print.</span></h2>
-          <p><span lang="es">Si una guía no responde tu caso, un agente lo revisa contigo sin costo.</span><span lang="en">If a guide doesn't answer your situation, an agent will review it with you at no cost.</span></p>
+          <h2 class="h2" id="cta-title"><span lang="es">¿No encuentras tu respuesta? Pregúntale a un agente.</span><span lang="en">Can't find your answer? Ask an agent.</span></h2>
+          <p><span lang="es">Si una guía no responde tu caso, un agente licenciado lo revisa contigo, sin costo y en tu idioma.</span><span lang="en">If a guide doesn't answer your situation, a licensed agent will review it with you, at no cost and in your language.</span></p>
+          <div class="cta__actions cta__actions--row">
+            <a class="btn btn--light btn--lg" href="contacto.html"><span lang="es">Pregúntale a un agente</span><span lang="en">Ask an agent</span> <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+            <a class="btn btn--ghost btn--lg" href="tel:+10000000000"><i class="ri-phone-line" aria-hidden="true"></i> (000) 000-0000</a>
+          </div>
         </div>
-        <div class="cta__actions">
-          <a class="btn btn--light btn--lg" href="contacto.html"><span lang="es">Pregúntale a un agente</span><span lang="en">Ask an agent</span> <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+        <div class="cta__media">
+          <img style="object-position: 50% 25%" src="assets/images/recursos-agente.webp" alt="Agente de Zelva atendiendo una llamada con una sonrisa" data-en-alt="Zelva agent smiling while answering a call" width="1024" height="1024" loading="lazy">
+          <span class="diagonal diagonal--lines" aria-hidden="true"></span>
         </div>
       </div>
     </div>

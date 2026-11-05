@@ -22,6 +22,7 @@
   gsap.registerPlugin(ST);
   if (Split) gsap.registerPlugin(Split);
   if (window.DrawSVGPlugin) gsap.registerPlugin(window.DrawSVGPlugin);
+  if (window.Flip) gsap.registerPlugin(window.Flip);
   root.classList.add("has-gsap");
 
   var hero = d.querySelector(".hero, .page-hero, .article-hero, .notice");
@@ -59,6 +60,7 @@
   mm.add({
     motion: "(prefers-reduced-motion: no-preference)",
     desktop: "(min-width: 981px)",
+    tall: "(min-height: 680px)",
     wideSteps: "(min-width: 821px)",
     pointer: "(hover: hover) and (pointer: fine)"
   }, function (ctx) {
@@ -82,8 +84,8 @@
       });
 
       var first = q(".breadcrumb, .eyebrow");
-      var after = q(".lead, .hero__actions, .page-hero__actions, .legal-meta, .article-meta, .notice__icon, .notice__actions");
-      var media = q(".quote-card, .media-frame, .article-cover, .collage__small, .collage__chip");
+      var after = q(".lead, .rsearch, .rsearch__hint, .hero__actions, .page-hero__actions, .legal-meta, .article-meta, .notice__icon, .notice__actions");
+      var media = q(".quote-card, .term-card, .media-frame, .article-cover, .collage__small, .collage__chip");
       var tiles = q(".quote-tile");
       var trust = q(".trust li");
       var diag = hero.querySelector(":scope > .diagonal");
@@ -196,7 +198,35 @@
         .fromTo(fill, { opacity: 0, scale: 0.92, transformOrigin: "20% 100%" }, { opacity: 1, scale: 1, ease: "power1.out", duration: 0.45 }, 0.75);
     }
 
-    /* ---------- 6. Brillo dorado que sigue al cursor (mouse) ---------- */
+    /* ---------- 6. Etapas de la vida: scroll horizontal fijado -------- */
+    var cleanups = [];
+    var stagesEl = d.querySelector("[data-stages]");
+    if (stagesEl && c.desktop && c.tall) {
+      var track = stagesEl.querySelector(".stages__track");
+      var viewport = stagesEl.querySelector(".stages__viewport");
+      var siteHeader = d.querySelector(".site-header");
+      stagesEl.classList.add("is-pinned");
+      var distance = function () { return Math.max(0, track.scrollWidth - viewport.clientWidth); };
+      var pinTween = gsap.to(track, {
+        x: function () { return -distance(); },
+        ease: "none",
+        scrollTrigger: {
+          trigger: stagesEl,
+          pin: true,
+          start: function () { return "top " + (siteHeader ? siteHeader.offsetHeight : 0) + "px"; },
+          end: function () { return "+=" + distance(); },
+          scrub: 0.6,
+          invalidateOnRefresh: true,
+          refreshPriority: 1, // se calcula antes que las animaciones de más abajo
+          onUpdate: function (self) { if (window.zelvaStagesUpdate) window.zelvaStagesUpdate(stagesEl, self.progress, self.progress * distance()); }
+        }
+      });
+      stagesEl.zelvaTrigger = pinTween.scrollTrigger;
+      ST.sort();
+      cleanups.push(function () { stagesEl.classList.remove("is-pinned"); stagesEl.zelvaTrigger = null; });
+    }
+
+    /* ---------- 7. Brillo dorado que sigue al cursor (mouse) ---------- */
     if (c.pointer) {
       var glowEls = d.querySelectorAll(".quote-tile, .card, .post-card");
       glowEls.forEach(function (el) { el.classList.add("glow"); });
@@ -208,11 +238,12 @@
         el.style.setProperty("--my", (e.clientY - r.top) + "px");
       };
       d.addEventListener("pointermove", onMove, { passive: true });
-      return function () {
+      cleanups.push(function () {
         d.removeEventListener("pointermove", onMove);
         glowEls.forEach(function (el) { el.classList.remove("glow"); });
-      };
+      });
     }
+    return function () { cleanups.forEach(function (fn) { fn(); }); };
   });
 
   /* Recalcular posiciones cuando cambia la altura de la página */

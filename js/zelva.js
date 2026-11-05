@@ -207,85 +207,120 @@
     chapters.forEach(function (c) { spyChapters.observe(c); });
   });
 
-  /* ---------- Filtros de recursos ------------------------------------ */
-  var filters = d.querySelectorAll("[data-filter]");
-  filters.forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      var cat = btn.getAttribute("data-filter");
-      filters.forEach(function (b) { b.setAttribute("aria-pressed", String(b === btn)); });
-      d.querySelectorAll("[data-cat]").forEach(function (card) {
-        card.classList.toggle("is-filtered-out", cat !== "all" && card.getAttribute("data-cat") !== cat);
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Recursos: búsqueda + filtro por tema ------------------- */
+  var searchItems = d.querySelectorAll("[data-search]");
+  if (searchItems.length) {
+    var filters = d.querySelectorAll("[data-filter]");
+    var searchInput = d.getElementById("rsearch");
+    var state = { cat: "all", q: "" };
+    var norm = function (s) { return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); };
+    // El texto incluye ambos idiomas: se puede buscar en español o en inglés
+    var index = Array.prototype.map.call(searchItems, function (el) { return norm(el.textContent); });
+
+    var applyFilters = function () {
+      var Flip = window.Flip;
+      var flipState = Flip && window.gsap && !reduceMotion ? Flip.getState(searchItems) : null;
+      var shown = { guide: 0, term: 0 };
+      searchItems.forEach(function (el, i) {
+        var kind = el.getAttribute("data-kind");
+        var okQ = !state.q || index[i].indexOf(state.q) !== -1;
+        var okCat = kind !== "guide" || state.cat === "all" || el.getAttribute("data-cat") === state.cat;
+        var show = okQ && okCat;
+        el.classList.toggle("is-filtered-out", !show);
+        if (show) shown[kind] = (shown[kind] || 0) + 1;
+        if (show && state.q && kind === "term") el.open = true;
+      });
+      d.querySelectorAll("[data-empty]").forEach(function (msg) { msg.hidden = shown[msg.getAttribute("data-empty")] > 0; });
+      if (flipState) {
+        window.Flip.from(flipState, {
+          duration: 0.55, ease: "power2.inOut", absolute: true, nested: true,
+          onEnter: function (els) { return window.gsap.fromTo(els, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.45 }); },
+          onLeave: function (els) { return window.gsap.to(els, { opacity: 0, duration: 0.25 }); }
+        });
+      }
+    };
+
+    filters.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        state.cat = btn.getAttribute("data-filter");
+        filters.forEach(function (b) { b.setAttribute("aria-pressed", String(b === btn)); });
+        applyFilters();
+      });
+    });
+    if (searchInput) {
+      var timer;
+      searchInput.addEventListener("input", function () {
+        clearTimeout(timer);
+        timer = setTimeout(function () { state.q = norm(searchInput.value.trim()); applyFilters(); }, 140);
+      });
+      searchInput.form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        state.q = norm(searchInput.value.trim());
+        applyFilters();
+        var target = d.getElementById("guias");
+        if (target) target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
+      });
+    }
+  }
+
+  /* ---------- Recursos: término del día ------------------------------ */
+  d.querySelectorAll("[data-term-rotator]").forEach(function (card) {
+    var items = card.querySelectorAll(".term-card__item");
+    var dots = card.querySelectorAll(".term-card__dots button");
+    var current = 0, timer = null;
+    var show = function (i) {
+      current = (i + items.length) % items.length;
+      items.forEach(function (el, j) { el.classList.toggle("is-active", j === current); });
+      dots.forEach(function (b, j) { b.setAttribute("aria-pressed", String(j === current)); });
+    };
+    var start = function () { if (!reduceMotion) timer = setInterval(function () { show(current + 1); }, 5500); };
+    var stop = function () { clearInterval(timer); };
+    dots.forEach(function (b, j) { b.addEventListener("click", function () { stop(); show(j); start(); }); });
+    card.addEventListener("mouseenter", stop);
+    card.addEventListener("mouseleave", start);
+    card.addEventListener("focusin", stop);
+    start();
+  });
+
+  /* ---------- Recursos: etapas de la vida -------------------------- */
+  // Actualiza el contador y la barra; también la usa js/zelva-motion.js
+  window.zelvaStagesUpdate = function (section, p, offset) {
+    var cards = section.querySelectorAll(".stage");
+    var n = cards.length;
+    var step = cards.length > 1 ? cards[1].offsetLeft - cards[0].offsetLeft : 1;
+    // Tarjeta que se ve a la izquierda; al final del recorrido, la última
+    var idx = p > 0.97 ? n - 1 : Math.min(n - 1, Math.round((offset || 0) / step));
+    var cur = section.querySelector("[data-stage-current]");
+    var bar = section.querySelector("[data-stage-bar]");
+    if (cur) cur.textContent = (idx < 9 ? "0" : "") + (idx + 1);
+    if (bar) bar.style.transform = "scaleX(" + Math.max(1 / n, p) + ")";
+  };
+  d.querySelectorAll("[data-stages]").forEach(function (section) {
+    var vp = section.querySelector(".stages__viewport");
+    var n = section.querySelectorAll(".stage").length;
+    vp.addEventListener("scroll", function () {
+      if (section.classList.contains("is-pinned")) return;
+      var max = vp.scrollWidth - vp.clientWidth;
+      window.zelvaStagesUpdate(section, max > 0 ? vp.scrollLeft / max : 0, vp.scrollLeft);
+    }, { passive: true });
+    section.querySelectorAll("[data-stage-nav]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var dir = Number(btn.getAttribute("data-stage-nav"));
+        var st = section.zelvaTrigger;
+        if (st && section.classList.contains("is-pinned")) {
+          var step = (st.end - st.start) / (n - 1);
+          var target = Math.round((st.scroll() - st.start) / step + dir);
+          target = Math.max(0, Math.min(n - 1, target));
+          window.scrollTo({ top: st.start + target * step + 2, behavior: reduceMotion ? "auto" : "smooth" });
+        } else {
+          var card = section.querySelector(".stage");
+          vp.scrollBy({ left: dir * (card.offsetWidth + 24), behavior: reduceMotion ? "auto" : "smooth" });
+        }
       });
     });
   });
-
-  /* ---------- Formulario de cotización ------------------------------- */
-  var form = d.getElementById("quote-form");
-  if (form) {
-    // Preseleccionar el seguro desde la URL: contacto.html?seguro=auto
-    var params = new URLSearchParams(window.location.search);
-    var preset = params.get("seguro");
-    var select = form.querySelector("#seguro");
-    if (preset && select) {
-      var opt = select.querySelector("option[data-key='" + preset + "']");
-      if (opt) opt.selected = true;
-    }
-    // Volver a esta web después del envío (funciona en cualquier dominio)
-    var next = form.querySelector("input[name='_next']");
-    if (next && /^https?:/.test(window.location.protocol)) {
-      next.value = new URL("gracias.html", window.location.href).href;
-    }
-
-    var msg = d.getElementById("form-msg");
-    var submit = form.querySelector("[type='submit']");
-    var rules = {
-      name: function (v) { return v.trim().length >= 2 ? "" : t("Escribe tu nombre completo.", "Please enter your full name."); },
-      email: function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? "" : t("Escribe un correo electrónico válido.", "Please enter a valid email address."); },
-      phone: function (v) { return !v.trim() || v.replace(/\D/g, "").length >= 10 ? "" : t("Escribe un teléfono de 10 dígitos.", "Please enter a 10-digit phone number."); },
-      message: function (v) { return v.trim().length >= 5 ? "" : t("Cuéntanos brevemente cómo podemos ayudarte.", "Briefly tell us how we can help."); }
-    };
-    function check(name) {
-      var input = form.elements[name];
-      if (!input) return true;
-      var err = rules[name](input.value);
-      var field = input.closest(".field");
-      var out = d.getElementById(name + "-error");
-      if (field) field.classList.toggle("has-error", !!err);
-      input.setAttribute("aria-invalid", err ? "true" : "false");
-      if (out) { out.textContent = err; out.hidden = !err; }
-      return !err;
-    }
-    Object.keys(rules).forEach(function (name) {
-      var input = form.elements[name];
-      if (!input) return;
-      input.addEventListener("blur", function () { if (input.value) check(name); });
-      input.addEventListener("input", function () {
-        if (input.closest(".field").classList.contains("has-error")) check(name);
-      });
-    });
-    form.addEventListener("submit", function (e) {
-      var ok = true, firstBad = null;
-      Object.keys(rules).forEach(function (name) {
-        if (!check(name)) { ok = false; if (!firstBad) firstBad = form.elements[name]; }
-      });
-      if (!ok) {
-        e.preventDefault();
-        if (msg) { msg.textContent = t("Revisa los campos marcados para continuar.", "Please review the highlighted fields."); msg.hidden = false; }
-        if (firstBad) firstBad.focus();
-        return;
-      }
-      if (msg) msg.hidden = true;
-      if (submit) {
-        submit.disabled = true;
-        submit.innerHTML = '<i class="ri-loader-4-line spin" aria-hidden="true"></i> ' + t("Enviando…", "Sending…");
-      }
-    });
-    // Si el usuario vuelve con el botón Atrás, reactivar el botón
-    window.addEventListener("pageshow", function () {
-      if (submit && submit.disabled) { submit.disabled = false; submit.innerHTML = submit.getAttribute("data-label-html") || submit.innerHTML; }
-    });
-    if (submit) submit.setAttribute("data-label-html", submit.innerHTML);
-  }
 
   /* ---------- Animaciones de entrada --------------------------------- */
   // Con GSAP disponible, js/zelva-motion.js se encarga; esto es el respaldo.
