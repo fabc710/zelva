@@ -84,7 +84,7 @@
       });
 
       var first = q(".breadcrumb, .eyebrow");
-      var after = q(".lead, .rsearch, .rsearch__hint, .hero__actions, .page-hero__actions, .legal-meta, .article-meta, .notice__icon, .notice__actions");
+      var after = q(".lead, .hero-chips, .rsearch, .rsearch__hint, .hero__actions, .page-hero__actions, .legal-meta, .article-meta, .notice__icon, .notice__actions");
       var media = q(".quote-card, .term-card, .media-frame, .article-cover, .collage__small, .collage__chip");
       var tiles = q(".quote-tile");
       var trust = q(".trust li");
@@ -103,6 +103,8 @@
             { clipPath: "polygon(100% 100%, 100% 100%, 100% 100%)" },
             { clipPath: "polygon(100% 100%, -100% 100%, 100% -100%)", duration: 1.8, ease: "power2.inOut", clearProps: "clipPath" }, 0);
         }
+        var heroBg = hero.querySelector(".contact-hero__bg img");
+        if (heroBg) tl.fromTo(heroBg, { scale: 1.14 }, { scale: 1, duration: 2.8, ease: "power2.out" }, 0);
         if (first.length) tl.fromTo(first, { opacity: 0, y: 14 }, { opacity: 1, y: 0, stagger: 0.08 }, 0.1);
         if (h1) {
           var s = splitLines(h1);
@@ -198,6 +200,15 @@
         .fromTo(fill, { opacity: 0, scale: 0.92, transformOrigin: "20% 100%" }, { opacity: 1, scale: 1, ease: "power1.out", duration: 0.45 }, 0.75);
     }
 
+    /* ---------- Contacto: fondo con parallax y línea de pasos ---------- */
+    var contactBg = d.querySelector(".contact-hero__bg img");
+    if (contactBg && c.desktop) {
+      gsap.to(contactBg, { yPercent: 8, ease: "none", scrollTrigger: { trigger: contactBg.closest("section"), start: "top top", end: "bottom top", scrub: true } });
+    }
+    gsap.utils.toArray(".next-card .next-steps").forEach(function (list) {
+      gsap.fromTo(list, { "--line": 0 }, { "--line": 1, ease: "none", scrollTrigger: { trigger: list, start: "top 82%", end: "bottom 60%", scrub: 0.6 } });
+    });
+
     /* ---------- 6. Etapas de la vida: scroll horizontal fijado -------- */
     var cleanups = [];
     var stagesEl = d.querySelector("[data-stages]");
@@ -238,6 +249,20 @@
         el.style.setProperty("--my", (e.clientY - r.top) + "px");
       };
       d.addEventListener("pointermove", onMove, { passive: true });
+      var magnets = gsap.utils.toArray(".btn--magnetic").map(function (btn) {
+        var xTo = gsap.quickTo(btn, "x", { duration: 0.4, ease: "power3" });
+        var yTo = gsap.quickTo(btn, "y", { duration: 0.4, ease: "power3" });
+        var move = function (e) {
+          var r = btn.getBoundingClientRect();
+          xTo((e.clientX - (r.left + r.width / 2)) * 0.25);
+          yTo((e.clientY - (r.top + r.height / 2)) * 0.35);
+        };
+        var leave = function () { xTo(0); yTo(0); };
+        btn.addEventListener("pointermove", move);
+        btn.addEventListener("pointerleave", leave);
+        return function () { btn.removeEventListener("pointermove", move); btn.removeEventListener("pointerleave", leave); gsap.set(btn, { x: 0, y: 0 }); };
+      });
+      cleanups.push(function () { magnets.forEach(function (fn) { fn(); }); });
       cleanups.push(function () {
         d.removeEventListener("pointermove", onMove);
         glowEls.forEach(function (el) { el.classList.remove("glow"); });

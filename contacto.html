@@ -23,12 +23,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&amp;family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css">
-<link rel="stylesheet" href="css/zelva.css?v=85e5974b">
+<link rel="stylesheet" href="css/zelva.css?v=a19e73ef">
 <script src="js/vendor/gsap/gsap.min.js" defer></script>
 <script src="js/vendor/gsap/ScrollTrigger.min.js" defer></script>
 <script src="js/vendor/gsap/SplitText.min.js" defer></script>
-<script src="js/zelva.js?v=35ed7ab8" defer></script>
-<script src="js/zelva-motion.js?v=9593a017" defer></script>
+<script src="js/zelva.js?v=9df5d7d2" defer></script>
+<script src="js/zelva-motion.js?v=b2e5171b" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#main"><span lang="es">Saltar al contenido</span><span lang="en">Skip to content</span></a>
@@ -126,7 +126,11 @@
 
 <main id="main">
 
-  <section class="page-hero page-hero--short on-dark" aria-labelledby="page-title">
+  <!-- ============================ PORTADA ============================ -->
+  <section class="page-hero page-hero--short contact-hero on-dark" aria-labelledby="page-title">
+    <div class="contact-hero__bg" aria-hidden="true">
+      <img src="assets/images/contacto-hero.webp" alt="" width="1536" height="1024" loading="eager" fetchpriority="high">
+    </div>
     <div class="diagonal" aria-hidden="true"></div>
     <div class="container">
       <ol class="breadcrumb">
@@ -136,19 +140,33 @@
       <p class="eyebrow"><span lang="es">Contacto y cotización</span><span lang="en">Contact and quote</span></p>
       <h1 class="display" id="page-title"><span lang="es">Hablemos de tu protección.</span><span lang="en">Let's talk about your coverage.</span></h1>
       <p class="lead"><span lang="es">Cuéntanos qué necesitas y un agente licenciado te contactará con opciones claras. Sin costo y sin compromiso.</span><span lang="en">Tell us what you need and a licensed agent will contact you with clear options. No cost, no obligation.</span></p>
+      <ul class="hero-chips">
+        <li><i class="ri-translate-2" aria-hidden="true"></i><span lang="es">Respuesta en tu idioma</span><span lang="en">Answers in your language</span></li>
+        <li><i class="ri-hand-heart-line" aria-hidden="true"></i><span lang="es">Sin costo ni compromiso</span><span lang="en">No cost, no obligation</span></li>
+        <li><i class="ri-user-star-line" aria-hidden="true"></i><span lang="es">Agentes licenciados</span><span lang="en">Licensed agents</span></li>
+      </ul>
     </div>
   </section>
 
+  <!-- ===================== FORMULARIO + DATOS ===================== -->
   <section class="section section--flush" aria-label="Formulario y datos de contacto" data-en-aria-label="Form and contact details">
     <div class="container contact">
 
       <div class="form-card" id="cotizar">
-        <h2><span lang="es">Solicita tu cotización gratis</span><span lang="en">Request your free quote</span></h2>
-        <p class="muted"><span lang="es">Los campos marcados con * son obligatorios.</span><span lang="en">Fields marked with * are required.</span></p>
+        <div class="wizard-head">
+          <h2><span lang="es">Solicita tu cotización gratis</span><span lang="en">Request your free quote</span></h2>
+          <p class="muted"><span lang="es">Tres pasos, menos de un minuto.</span><span lang="en">Three steps, less than a minute.</span></p>
+          <ol class="wizard-steps" aria-hidden="true">
+            <li class="is-current"><span>1</span><span lang="es">Seguro</span><span lang="en">Coverage</span></li>
+            <li><span>2</span><span lang="es">Tus datos</span><span lang="en">Your details</span></li>
+            <li><span>3</span><span lang="es">Mensaje</span><span lang="en">Message</span></li>
+          </ol>
+          <div class="wizard-bar" aria-hidden="true"><span></span></div>
+        </div>
 
         <!-- FormSubmit envía cada solicitud a info@zelvainsurance.com.
              La primera vez, FormSubmit enviará un correo de activación a esa dirección: hay que confirmarlo. -->
-        <form id="quote-form" action="https://formsubmit.co/info@zelvainsurance.com" method="POST" novalidate>
+        <form id="quote-form" class="wizard" action="https://formsubmit.co/info@zelvainsurance.com" method="POST" novalidate>
           <input type="hidden" name="_subject" value="Nueva solicitud de cotización — Sitio web Zelva">
           <input type="hidden" name="_template" value="table">
           <input type="hidden" name="_captcha" value="false">
@@ -156,59 +174,77 @@
           <input type="hidden" name="idioma_sitio" value="Español">
           <div class="hp" aria-hidden="true"><label>No llenar <input type="text" name="_honey" tabindex="-1" autocomplete="off"></label></div>
 
-          <div class="form-grid">
-            <div class="field">
-              <label for="name"><span lang="es">Nombre completo</span><span lang="en">Full name</span> <span class="req">*</span></label>
-              <input type="text" id="name" name="name" autocomplete="name" required aria-describedby="name-error" placeholder="Tu nombre y apellido" data-en-placeholder="Your first and last name">
-              <span class="field__error" id="name-error" hidden></span>
+          <!-- Paso 1 -->
+          <fieldset class="wizard__step is-active" data-step="1">
+            <legend class="wizard__title" tabindex="-1"><span class="wizard__count"><span lang="es">Paso 1 de 3</span><span lang="en">Step 1 of 3</span></span><span lang="es">¿Qué quieres proteger?</span><span lang="en">What would you like to protect?</span></legend>
+            <div class="choice-grid" aria-describedby="tipo-error">
+              <label class="choice"><input type="radio" name="tipo_de_seguro" value="Auto" data-key="auto"><span class="choice__box"><svg class="bi" aria-hidden="true" focusable="false"><use href="assets/brand/icons.svg#i-auto"></use></svg><span>Auto</span></span></label>
+              <label class="choice"><input type="radio" name="tipo_de_seguro" value="Hogar" data-key="hogar"><span class="choice__box"><svg class="bi" aria-hidden="true" focusable="false"><use href="assets/brand/icons.svg#i-hogar"></use></svg><span><span lang="es">Hogar</span><span lang="en">Home</span></span></span></label>
+              <label class="choice"><input type="radio" name="tipo_de_seguro" value="Vida" data-key="vida"><span class="choice__box"><svg class="bi" aria-hidden="true" focusable="false"><use href="assets/brand/icons.svg#i-vida"></use></svg><span><span lang="es">Vida</span><span lang="en">Life</span></span></span></label>
+              <label class="choice"><input type="radio" name="tipo_de_seguro" value="Salud" data-key="salud"><span class="choice__box"><svg class="bi" aria-hidden="true" focusable="false"><use href="assets/brand/icons.svg#i-salud"></use></svg><span><span lang="es">Salud</span><span lang="en">Health</span></span></span></label>
+              <label class="choice"><input type="radio" name="tipo_de_seguro" value="Comercial" data-key="comercial"><span class="choice__box"><svg class="bi" aria-hidden="true" focusable="false"><use href="assets/brand/icons.svg#i-comercial"></use></svg><span><span lang="es">Comercial</span><span lang="en">Commercial</span></span></span></label>
+              <label class="choice"><input type="radio" name="tipo_de_seguro" value="Umbrella" data-key="umbrella"><span class="choice__box"><svg class="bi" aria-hidden="true" focusable="false"><use href="assets/brand/icons.svg#i-umbrella"></use></svg><span>Umbrella</span></span></label>
+              <label class="choice choice--wide"><input type="radio" name="tipo_de_seguro" value="Varios / no estoy seguro" data-key="varios"><span class="choice__box"><svg class="bi" aria-hidden="true" focusable="false"><use href="assets/brand/icons.svg#i-asesoria"></use></svg><span><span lang="es">Varios o no estoy seguro</span><span lang="en">Several or not sure</span></span></span></label>
             </div>
-            <div class="field">
-              <label for="email"><span lang="es">Correo electrónico</span><span lang="en">Email</span> <span class="req">*</span></label>
-              <input type="email" id="email" name="email" autocomplete="email" required aria-describedby="email-error" placeholder="tucorreo@ejemplo.com" data-en-placeholder="you@example.com">
-              <span class="field__error" id="email-error" hidden></span>
+            <span class="field__error" id="tipo-error" hidden></span>
+            <div class="wizard__nav">
+              <button class="btn" type="button" data-next><span lang="es">Continuar</span><span lang="en">Continue</span> <i class="ri-arrow-right-line" aria-hidden="true"></i></button>
             </div>
-            <div class="field">
-              <label for="phone"><span lang="es">Teléfono</span><span lang="en">Phone</span></label>
-              <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" aria-describedby="phone-error" placeholder="(555) 555-5555">
-              <span class="field__error" id="phone-error" hidden></span>
-            </div>
-            <div class="field">
-              <label for="seguro"><span lang="es">Tipo de seguro</span><span lang="en">Type of insurance</span></label>
-              <select id="seguro" name="tipo_de_seguro">
-                <option value="No estoy seguro" data-key="otro" data-en="I'm not sure yet">No estoy seguro todavía</option>
-                <option value="Auto" data-key="auto">Auto</option>
-                <option value="Hogar" data-key="hogar" data-en="Home">Hogar</option>
-                <option value="Vida" data-key="vida" data-en="Life">Vida</option>
-                <option value="Salud" data-key="salud" data-en="Health">Salud</option>
-                <option value="Comercial" data-key="comercial" data-en="Commercial">Comercial</option>
-                <option value="Umbrella" data-key="umbrella">Umbrella</option>
-                <option value="Varios" data-key="varios" data-en="Several / bundle">Varios / combinar pólizas</option>
-              </select>
-            </div>
-            <fieldset class="field field--full">
-              <legend><span lang="es">¿En qué idioma prefieres que te atendamos?</span><span lang="en">Which language do you prefer?</span></legend>
-              <div class="seg">
-                <label><input type="radio" name="idioma_preferido" value="Español" checked><span>Español</span></label>
-                <label><input type="radio" name="idioma_preferido" value="English"><span>English</span></label>
+          </fieldset>
+
+          <!-- Paso 2 -->
+          <fieldset class="wizard__step" data-step="2">
+            <legend class="wizard__title" tabindex="-1"><span class="wizard__count"><span lang="es">Paso 2 de 3</span><span lang="en">Step 2 of 3</span></span><span lang="es">¿Cómo te contactamos?</span><span lang="en">How should we reach you?</span></legend>
+            <div class="form-grid">
+              <div class="field">
+                <label for="name"><span lang="es">Nombre completo</span><span lang="en">Full name</span> <span class="req">*</span></label>
+                <input type="text" id="name" name="name" autocomplete="name" required aria-describedby="name-error" placeholder="Tu nombre y apellido" data-en-placeholder="Your first and last name">
+                <span class="field__error" id="name-error" hidden></span>
               </div>
-            </fieldset>
-            <div class="field field--full">
-              <label for="message"><span lang="es">¿Cómo podemos ayudarte?</span><span lang="en">How can we help?</span> <span class="req">*</span></label>
+              <div class="field">
+                <label for="email"><span lang="es">Correo electrónico</span><span lang="en">Email</span> <span class="req">*</span></label>
+                <input type="email" id="email" name="email" autocomplete="email" required aria-describedby="email-error" placeholder="tucorreo@ejemplo.com" data-en-placeholder="you@example.com">
+                <span class="field__error" id="email-error" hidden></span>
+              </div>
+              <div class="field">
+                <label for="phone"><span lang="es">Teléfono</span><span lang="en">Phone</span></label>
+                <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" aria-describedby="phone-error" placeholder="(555) 555-5555">
+                <span class="field__error" id="phone-error" hidden></span>
+              </div>
+              <fieldset class="field">
+                <legend><span lang="es">Idioma preferido</span><span lang="en">Preferred language</span></legend>
+                <div class="seg">
+                  <label><input type="radio" name="idioma_preferido" value="Español" checked><span>Español</span></label>
+                  <label><input type="radio" name="idioma_preferido" value="English"><span>English</span></label>
+                </div>
+              </fieldset>
+            </div>
+            <div class="wizard__nav">
+              <button class="btn btn--outline" type="button" data-prev><i class="ri-arrow-left-line" aria-hidden="true"></i> <span lang="es">Atrás</span><span lang="en">Back</span></button>
+              <button class="btn" type="button" data-next><span lang="es">Continuar</span><span lang="en">Continue</span> <i class="ri-arrow-right-line" aria-hidden="true"></i></button>
+            </div>
+          </fieldset>
+
+          <!-- Paso 3 -->
+          <fieldset class="wizard__step" data-step="3">
+            <legend class="wizard__title" tabindex="-1"><span class="wizard__count"><span lang="es">Paso 3 de 3</span><span lang="en">Step 3 of 3</span></span><span lang="es">¿Cómo podemos ayudarte?</span><span lang="en">How can we help?</span></legend>
+            <p class="wizard__summary" data-summary hidden></p>
+            <div class="field">
+              <label for="message"><span lang="es">Tu mensaje</span><span lang="en">Your message</span> <span class="req">*</span></label>
               <textarea id="message" name="message" rows="5" required aria-describedby="message-error" placeholder="Cuéntanos qué quieres proteger o qué póliza quieres revisar." data-en-placeholder="Tell us what you'd like to protect or which policy you want reviewed."></textarea>
               <span class="field__error" id="message-error" hidden></span>
             </div>
-            <label class="consent field--full">
+            <label class="consent">
               <input type="checkbox" name="consentimiento_sms" value="Sí / Yes">
               <span><span lang="es">Al marcar esta casilla, acepto recibir mensajes de texto de <strong>Zelva Insurance Agency Corp</strong> sobre recordatorios de citas, actualizaciones de facturación o avisos de servicio al número de teléfono indicado. La frecuencia de los mensajes puede variar. Pueden aplicarse tarifas de mensajes y datos. Responde HELP para recibir ayuda y STOP para dejar de recibir mensajes en cualquier momento. Consulta nuestra <a href="privacidad.html" target="_blank" rel="noopener">Política de privacidad</a> y los <a href="terminos-sms.html" target="_blank" rel="noopener">Términos de SMS</a>.</span><span lang="en">By checking this box, I agree to receive text messages from <strong>Zelva Insurance Agency Corp</strong> about appointment reminders, billing updates or service notifications at the phone number provided. Message frequency may vary. Message and data rates may apply. Reply HELP for help and STOP to opt out at any time. See our <a href="privacidad.html" target="_blank" rel="noopener">Privacy Policy</a> and <a href="terminos-sms.html" target="_blank" rel="noopener">SMS Terms</a>.</span></span>
             </label>
-            <div class="field--full">
-              <div class="form-msg" id="form-msg" role="alert" hidden></div>
+            <div class="form-msg" id="form-msg" role="alert" hidden></div>
+            <div class="wizard__nav">
+              <button class="btn btn--outline" type="button" data-prev><i class="ri-arrow-left-line" aria-hidden="true"></i> <span lang="es">Atrás</span><span lang="en">Back</span></button>
+              <button class="btn btn--lg btn--magnetic" type="submit"><i class="ri-send-plane-line" aria-hidden="true"></i> <span lang="es">Enviar solicitud</span><span lang="en">Send request</span></button>
             </div>
-            <div class="field--full">
-              <button class="btn btn--lg btn--block" type="submit"><i class="ri-send-plane-line" aria-hidden="true"></i> <span lang="es">Enviar solicitud</span><span lang="en">Send request</span></button>
-              <p class="form-note"><i class="ri-lock-line" aria-hidden="true"></i> <span lang="es">Tu información es confidencial. Nunca la vendemos a terceros.</span><span lang="en">Your information is confidential. We never sell it to third parties.</span></p>
-            </div>
-          </div>
+            <p class="form-note"><i class="ri-lock-line" aria-hidden="true"></i> <span lang="es">Tu información es confidencial. Nunca la vendemos a terceros.</span><span lang="en">Your information is confidential. We never sell it to third parties.</span></p>
+          </fieldset>
         </form>
       </div>
 
@@ -217,13 +253,21 @@
           <h2><span lang="es">Atención directa</span><span lang="en">Reach us directly</span></h2>
           <p><span lang="es">¿Prefieres hablar con alguien? Estamos para ayudarte.</span><span lang="en">Prefer to talk to someone? We're here to help.</span></p>
           <ul class="info-list">
-            <li><i class="ri-phone-line" aria-hidden="true"></i><div><small><span lang="es">Teléfono</span><span lang="en">Phone</span></small><a href="tel:+10000000000">(000) 000-0000</a></div></li>
-            <li><i class="ri-mail-line" aria-hidden="true"></i><div><small><span lang="es">Correo</span><span lang="en">Email</span></small><a href="mailto:info@zelvainsurance.com">info@zelvainsurance.com</a></div></li>
+            <li>
+              <i class="ri-phone-line" aria-hidden="true"></i>
+              <div><small><span lang="es">Teléfono</span><span lang="en">Phone</span></small><a href="tel:+10000000000">(000) 000-0000</a></div>
+              <button class="copy-btn" type="button" data-copy="(000) 000-0000" aria-label="Copiar teléfono" data-en-aria-label="Copy phone"><i class="ri-file-copy-line" aria-hidden="true"></i><span lang="es">Copiar</span><span lang="en">Copy</span></button>
+            </li>
+            <li>
+              <i class="ri-mail-line" aria-hidden="true"></i>
+              <div><small><span lang="es">Correo</span><span lang="en">Email</span></small><a href="mailto:info@zelvainsurance.com">info@zelvainsurance.com</a></div>
+              <button class="copy-btn" type="button" data-copy="info@zelvainsurance.com" aria-label="Copiar correo" data-en-aria-label="Copy email"><i class="ri-file-copy-line" aria-hidden="true"></i><span lang="es">Copiar</span><span lang="en">Copy</span></button>
+            </li>
             <li><i class="ri-time-line" aria-hidden="true"></i><div><small><span lang="es">Horario</span><span lang="en">Hours</span></small><strong><span lang="es">Lunes a viernes · 9:00 – 18:00</span><span lang="en">Monday to Friday · 9:00 AM – 6:00 PM</span></strong></div></li>
             <li><i class="ri-translate-2" aria-hidden="true"></i><div><small><span lang="es">Idiomas</span><span lang="en">Languages</span></small><strong><span lang="es">Español e inglés</span><span lang="en">English and Spanish</span></strong></div></li>
           </ul>
         </div>
-        <div class="card">
+        <div class="card next-card">
           <p class="card__kicker"><span lang="es">Qué pasa después</span><span lang="en">What happens next</span></p>
           <ol class="next-steps">
             <li><div><strong><span lang="es">Revisamos tu solicitud</span><span lang="en">We review your request</span></strong><span lang="es">Un agente licenciado analiza lo que necesitas.</span><span lang="en">A licensed agent looks at what you need.</span></div></li>
@@ -233,6 +277,35 @@
         </div>
       </aside>
 
+    </div>
+  </section>
+
+  <!-- ============================== PREGUNTAS ============================== -->
+  <section class="section section--tint" aria-labelledby="faq-title">
+    <div class="container faq-layout">
+      <div class="faq-layout__head" data-reveal>
+        <p class="eyebrow"><span lang="es">Antes de escribirnos</span><span lang="en">Before you write</span></p>
+        <h2 class="h2" id="faq-title"><span lang="es">Lo que suelen preguntarnos.</span><span lang="en">What people usually ask.</span></h2>
+        <p class="lead"><span lang="es">Si tienes otra duda, escríbela en tu mensaje y te respondemos.</span><span lang="en">If you have another question, include it in your message and we'll answer.</span></p>
+      </div>
+      <div class="faq" data-reveal>
+        <details>
+          <summary><span lang="es">¿Cuándo me van a contactar?</span><span lang="en">When will you contact me?</span></summary>
+          <div class="faq__a"><p><span lang="es">Lo antes posible dentro de nuestro horario de oficina, de lunes a viernes de 9:00 a 18:00, por teléfono o correo y en el idioma que elegiste.</span><span lang="en">As soon as possible during office hours, Monday to Friday from 9:00 AM to 6:00 PM, by phone or email and in the language you chose.</span></p></div>
+        </details>
+        <details>
+          <summary><span lang="es">¿Tiene algún costo pedir una cotización?</span><span lang="en">Does a quote cost anything?</span></summary>
+          <div class="faq__a"><p><span lang="es">No. La cotización y la asesoría son gratuitas y sin compromiso: te presentamos opciones y tú decides.</span><span lang="en">No. Quotes and advice are free and come with no obligation: we present the options and you decide.</span></p></div>
+        </details>
+        <details>
+          <summary><span lang="es">¿Qué información debo tener a mano?</span><span lang="en">What information should I have ready?</span></summary>
+          <div class="faq__a"><p><span lang="es">Depende del seguro. Para auto, los datos de los conductores y vehículos; para hogar, la dirección y características de la vivienda. Si ya tienes una póliza, compártela y la revisamos.</span><span lang="en">It depends on the coverage. For auto, driver and vehicle details; for home, the address and features of the property. If you already have a policy, share it and we'll review it.</span></p></div>
+        </details>
+        <details>
+          <summary><span lang="es">¿Atienden en mi estado?</span><span lang="en">Do you serve my state?</span></summary>
+          <div class="faq__a"><p><span lang="es">Atendemos clientes en los estados donde nuestros agentes están licenciados. Escríbenos y te confirmamos si podemos ayudarte en el tuyo.</span><span lang="en">We serve clients in the states where our agents are licensed. Write to us and we'll confirm whether we can help in yours.</span></p></div>
+        </details>
+      </div>
     </div>
   </section>
 

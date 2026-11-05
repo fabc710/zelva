@@ -322,6 +322,185 @@
     });
   });
 
+  /* ---------- Formulario de cotización por pasos (Contacto) ---------- */
+  var form = d.getElementById("quote-form");
+  if (form) {
+    // Preseleccionar el seguro desde la URL: contacto.html?seguro=auto
+    var preset = new URLSearchParams(window.location.search).get("seguro");
+    if (preset) {
+      var presetRadio = form.querySelector("input[name='tipo_de_seguro'][data-key='" + preset + "']");
+      if (presetRadio) presetRadio.checked = true;
+    }
+    // Volver a esta web después del envío (funciona en cualquier dominio)
+    var next = form.querySelector("input[name='_next']");
+    if (next && /^https?:/.test(window.location.protocol)) {
+      next.value = new URL("gracias.html", window.location.href).href;
+    }
+
+    var msg = d.getElementById("form-msg");
+    var submit = form.querySelector("[type='submit']");
+    var steps = form.querySelectorAll(".wizard__step");
+    var indicators = d.querySelectorAll(".wizard-steps li");
+    var bar = d.querySelector(".wizard-bar span");
+    var stepRules = { 1: ["tipo_de_seguro"], 2: ["name", "email", "phone"], 3: ["message"] };
+    var current = 1;
+    var rules = {
+      tipo_de_seguro: function () { return form.querySelector("input[name='tipo_de_seguro']:checked") ? "" : t("Elige una opción para continuar.", "Choose an option to continue."); },
+      name: function (v) { return v.trim().length >= 2 ? "" : t("Escribe tu nombre completo.", "Please enter your full name."); },
+      email: function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? "" : t("Escribe un correo electrónico válido.", "Please enter a valid email address."); },
+      phone: function (v) { return !v.trim() || v.replace(/\D/g, "").length >= 10 ? "" : t("Escribe un teléfono de 10 dígitos.", "Please enter a 10-digit phone number."); },
+      message: function (v) { return v.trim().length >= 5 ? "" : t("Cuéntanos brevemente cómo podemos ayudarte.", "Briefly tell us how we can help."); }
+    };
+    var fieldOf = function (name) {
+      return name === "tipo_de_seguro" ? form.querySelector(".choice-grid") : form.elements[name].closest(".field");
+    };
+    var check = function (name) {
+      var input = form.elements[name];
+      var err = rules[name](input && input.value !== undefined ? input.value : "");
+      var field = fieldOf(name);
+      var out = d.getElementById(name === "tipo_de_seguro" ? "tipo-error" : name + "-error");
+      if (field) field.classList.toggle("has-error", !!err);
+      if (name !== "tipo_de_seguro") input.setAttribute("aria-invalid", err ? "true" : "false");
+      if (out) { out.textContent = err; out.hidden = !err; }
+      if (err && field && window.gsap && !reduceMotion) {
+        window.gsap.fromTo(field, { x: -8 }, { x: 0, duration: 0.5, ease: "elastic.out(1, 0.35)", clearProps: "transform" });
+      }
+      return !err;
+    };
+    var focusField = function (name) {
+      var el = name === "tipo_de_seguro" ? form.querySelector("input[name='tipo_de_seguro']") : form.elements[name];
+      if (el) el.focus();
+    };
+    var validStep = function (n) {
+      var firstBad = null;
+      stepRules[n].forEach(function (name) { if (!check(name) && !firstBad) firstBad = name; });
+      return firstBad;
+    };
+    var updateSummary = function () {
+      var box = form.querySelector("[data-summary]");
+      var chosen = form.querySelector("input[name='tipo_de_seguro']:checked");
+      var lang = form.querySelector("input[name='idioma_preferido']:checked");
+      if (!box || !chosen) return;
+      box.innerHTML = "";
+      var box2 = chosen.nextElementSibling;
+      var inLang = box2.querySelector("[lang='" + currentLang() + "']");
+      [[t("Seguro", "Coverage"), (inLang || box2).textContent.trim()],
+       [t("Idioma", "Language"), lang ? lang.value : ""]].forEach(function (pair) {
+        var chip = d.createElement("span");
+        chip.textContent = pair[0] + ": " + pair[1];
+        box.appendChild(chip);
+      });
+      box.hidden = false;
+    };
+    var go = function (n, focus) {
+      var prev = current;
+      current = Math.max(1, Math.min(steps.length, n));
+      steps.forEach(function (s) { s.classList.toggle("is-active", Number(s.getAttribute("data-step")) === current); });
+      indicators.forEach(function (li, i) {
+        li.classList.toggle("is-current", i + 1 === current);
+        li.classList.toggle("is-done", i + 1 < current);
+      });
+      if (bar) bar.style.transform = "scaleX(" + current / steps.length + ")";
+      if (current === steps.length) updateSummary();
+      var active = form.querySelector(".wizard__step.is-active");
+      if (window.gsap && !reduceMotion && prev !== current) {
+        window.gsap.fromTo(active, { opacity: 0, x: current > prev ? 28 : -28 }, { opacity: 1, x: 0, duration: 0.45, ease: "power3.out", clearProps: "transform,opacity" });
+      }
+      if (focus) {
+        var title = active.querySelector(".wizard__title");
+        if (title) title.focus({ preventScroll: true });
+        var card = d.getElementById("cotizar");
+        if (card && card.getBoundingClientRect().top < 0) card.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+      }
+    };
+
+    if (steps.length > 1) {
+      form.classList.add("wizard--js");
+      form.querySelectorAll("[data-next]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          var bad = validStep(current);
+          if (bad) focusField(bad); else go(current + 1, true);
+        });
+      });
+      form.querySelectorAll("[data-prev]").forEach(function (b) { b.addEventListener("click", function () { go(current - 1, true); }); });
+      // Al elegir un seguro, avanzar solo al siguiente paso
+      form.querySelectorAll("input[name='tipo_de_seguro']").forEach(function (r) {
+        r.addEventListener("change", function () {
+          check("tipo_de_seguro");
+          setTimeout(function () { if (current === 1) go(2, true); }, 350);
+        });
+      });
+      // Enter dentro de un paso avanza en lugar de enviar
+      form.addEventListener("keydown", function (e) {
+        var tag = e.target.tagName;
+        if (e.key !== "Enter" || tag !== "INPUT" || e.target.type === "checkbox" || current >= steps.length) return;
+        e.preventDefault();
+        var bad = validStep(current);
+        if (bad) focusField(bad); else go(current + 1, true);
+      });
+      go(1, false);
+    }
+
+    ["name", "email", "phone", "message"].forEach(function (name) {
+      var input = form.elements[name];
+      if (!input) return;
+      input.addEventListener("blur", function () { if (input.value) check(name); });
+      input.addEventListener("input", function () { if (input.closest(".field").classList.contains("has-error")) check(name); });
+    });
+
+    form.addEventListener("submit", function (e) {
+      for (var n = 1; n <= 3; n++) {
+        var bad = validStep(n);
+        if (bad) {
+          e.preventDefault();
+          if (steps.length > 1) go(n, false);
+          if (msg) { msg.textContent = t("Revisa los campos marcados para continuar.", "Please review the highlighted fields."); msg.hidden = n !== 3; }
+          focusField(bad);
+          return;
+        }
+      }
+      if (msg) msg.hidden = true;
+      if (submit) {
+        submit.disabled = true;
+        submit.innerHTML = '<i class="ri-loader-4-line spin" aria-hidden="true"></i> ' + t("Enviando…", "Sending…");
+      }
+    });
+    // Si el usuario vuelve con el botón Atrás, reactivar el botón
+    if (submit) submit.setAttribute("data-label-html", submit.innerHTML);
+    window.addEventListener("pageshow", function () {
+      if (submit && submit.disabled) { submit.disabled = false; submit.innerHTML = submit.getAttribute("data-label-html"); }
+    });
+  }
+
+  /* ---------- Copiar teléfono o correo ------------------------------- */
+  d.querySelectorAll("[data-copy]").forEach(function (btn) {
+    var es = btn.querySelector("[lang='es']"), en = btn.querySelector("[lang='en']"), icon = btn.querySelector("i");
+    var done = function () {
+      btn.classList.add("is-copied");
+      if (es) es.textContent = "¡Copiado!";
+      if (en) en.textContent = "Copied!";
+      if (icon) icon.className = "ri-check-line";
+      setTimeout(function () {
+        btn.classList.remove("is-copied");
+        if (es) es.textContent = "Copiar";
+        if (en) en.textContent = "Copy";
+        if (icon) icon.className = "ri-file-copy-line";
+      }, 1800);
+    };
+    var fallback = function (text) {
+      var ta = d.createElement("textarea");
+      ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+      d.body.appendChild(ta); ta.select();
+      try { if (d.execCommand("copy")) done(); } catch (err) { /* sin portapapeles */ }
+      d.body.removeChild(ta);
+    };
+    btn.addEventListener("click", function () {
+      var text = btn.getAttribute("data-copy");
+      if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done, function () { fallback(text); });
+      else fallback(text);
+    });
+  });
+
   /* ---------- Animaciones de entrada --------------------------------- */
   // Con GSAP disponible, js/zelva-motion.js se encarga; esto es el respaldo.
   var reveal = window.gsap && window.ScrollTrigger ? [] : d.querySelectorAll("[data-reveal]");
