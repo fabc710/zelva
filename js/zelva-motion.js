@@ -1,0 +1,215 @@
+/* =====================================================================
+   ZELVA INSURANCE AGENCY CORP — Animaciones (GSAP 3.15)
+   Movimiento sutil y con marca: "elegantes, pero no ostentosos".
+   - Entrada de la portada: título línea por línea y diagonal dorada
+   - Secciones que aparecen en secuencia al hacer scroll
+   - Línea dorada del proceso que se llena con el scroll
+   - Parallax leve en fotografías (solo escritorio)
+   - Brillo dorado en el borde de tarjetas (solo con mouse)
+   Si GSAP no carga, js/zelva.js muestra el contenido sin animación.
+   Quien tenga activado "reducir movimiento" ve todo sin animaciones.
+   ===================================================================== */
+(function () {
+  "use strict";
+
+  var gsap = window.gsap;
+  var ST = window.ScrollTrigger;
+  var Split = window.SplitText;
+  var d = document;
+  var root = d.documentElement;
+
+  if (!gsap || !ST) { root.classList.remove("intro"); return; }
+  gsap.registerPlugin(ST);
+  if (Split) gsap.registerPlugin(Split);
+  root.classList.add("has-gsap");
+
+  var hero = d.querySelector(".hero, .page-hero, .article-hero, .notice");
+  var reveals = gsap.utils.toArray("[data-reveal]");
+
+  /* Los textos bilingües tienen dos <span lang>: se anima solo el visible */
+  function visiblePart(el) {
+    var parts = el.querySelectorAll(":scope > [lang]");
+    for (var i = 0; i < parts.length; i++) {
+      if (parts[i].getClientRects().length) return parts[i];
+    }
+    return el;
+  }
+
+  /* Divide un titular en líneas; devuelve null si no es posible */
+  function splitLines(el) {
+    if (!Split || !el) return null;
+    var target = visiblePart(el);
+    if (target !== el) target.style.display = "block";
+    var split = new Split(target, { type: "lines", linesClass: "split-line" });
+    var done = function () {
+      split.revert();
+      if (target !== el) target.style.display = "";
+    };
+    return { lines: split.lines, done: done };
+  }
+
+  function fontsReady(maxWait) {
+    if (!d.fonts || d.fonts.status === "loaded") return Promise.resolve();
+    return Promise.race([d.fonts.ready, new Promise(function (r) { setTimeout(r, maxWait); })]);
+  }
+
+  var mm = gsap.matchMedia();
+
+  mm.add({
+    motion: "(prefers-reduced-motion: no-preference)",
+    desktop: "(min-width: 981px)",
+    wideSteps: "(min-width: 821px)",
+    pointer: "(hover: hover) and (pointer: fine)"
+  }, function (ctx) {
+    var c = ctx.conditions;
+
+    if (!c.motion) {
+      // Movimiento reducido: todo visible, sin animaciones
+      root.classList.remove("intro");
+      reveals.forEach(function (el) { el.classList.add("is-visible"); });
+      return;
+    }
+
+    /* ---------- 1. Entrada de la portada ---------------------------- */
+    var handled = [];
+    if (hero) {
+      var q = function (sel) { return gsap.utils.toArray(hero.querySelectorAll(sel)); };
+      q("[data-reveal]").forEach(function (el) {
+        gsap.set(el, { opacity: 1, y: 0 });
+        el.classList.add("is-visible");
+        handled.push(el);
+      });
+
+      var first = q(".breadcrumb, .eyebrow");
+      var after = q(".lead, .hero__actions, .page-hero__actions, .legal-meta, .article-meta, .notice__icon, .notice__actions");
+      var media = q(".quote-card, .media-frame, .article-cover");
+      var tiles = q(".quote-tile");
+      var trust = q(".trust li");
+      var diag = hero.querySelector(":scope > .diagonal");
+      var h1 = hero.querySelector("h1");
+
+      // Ocultar ya, antes de esperar a las fuentes, para evitar parpadeos
+      gsap.set([].concat(first, after, media, tiles, trust), { opacity: 0 });
+      if (h1) gsap.set(h1, { opacity: 0 });
+      root.classList.remove("intro");
+
+      fontsReady(700).then(function () {
+        var tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 0.9 } });
+        if (diag) {
+          tl.fromTo(diag,
+            { clipPath: "polygon(100% 100%, 100% 100%, 100% 100%)" },
+            { clipPath: "polygon(100% 100%, -100% 100%, 100% -100%)", duration: 1.8, ease: "power2.inOut", clearProps: "clipPath" }, 0);
+        }
+        if (first.length) tl.fromTo(first, { opacity: 0, y: 14 }, { opacity: 1, y: 0, stagger: 0.08 }, 0.1);
+        if (h1) {
+          var s = splitLines(h1);
+          gsap.set(h1, { opacity: 1 });
+          if (s) {
+            tl.fromTo(s.lines, { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 1.05, stagger: 0.12, ease: "power4.out", onComplete: s.done }, 0.2);
+          } else {
+            tl.fromTo(h1, { opacity: 0, y: 24 }, { opacity: 1, y: 0 }, 0.2);
+          }
+        }
+        if (after.length) tl.fromTo(after, { opacity: 0, y: 18 }, { opacity: 1, y: 0, stagger: 0.1 }, 0.55);
+        if (media.length) tl.fromTo(media, { opacity: 0, y: 40, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 1.1, clearProps: "transform" }, 0.45);
+        if (tiles.length) tl.fromTo(tiles, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.05, clearProps: "transform" }, 0.8);
+        if (trust.length) tl.fromTo(trust, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.08 }, 1);
+      });
+    } else {
+      root.classList.remove("intro");
+    }
+
+    /* ---------- 2. Secciones que aparecen al hacer scroll ------------ */
+    var rest = reveals.filter(function (el) { return handled.indexOf(el) === -1; });
+    gsap.set(rest, { opacity: 0, y: 28 });
+    ST.batch(rest, {
+      start: "top 88%",
+      once: true,
+      onEnter: function (batch) {
+        gsap.to(batch, {
+          opacity: 1, y: 0, duration: 0.9, ease: "power3.out", stagger: 0.1, overwrite: true,
+          onComplete: function () { batch.forEach(function (el) { el.classList.add("is-visible"); }); }
+        });
+      }
+    });
+
+    /* Titulares de sección: entran línea por línea */
+    gsap.utils.toArray("main .h2").forEach(function (h2) {
+      if (hero && hero.contains(h2)) return;
+      ST.create({
+        trigger: h2,
+        start: "top 88%",
+        once: true,
+        onEnter: function () {
+          var s = splitLines(h2);
+          if (!s) return;
+          gsap.fromTo(s.lines, { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.95, stagger: 0.1, ease: "power3.out", delay: 0.1, onComplete: s.done });
+        }
+      });
+    });
+
+    /* ---------- 3. Proceso: la línea dorada avanza con el scroll ------- */
+    gsap.utils.toArray(".steps").forEach(function (steps) {
+      var nums = gsap.utils.toArray(steps.querySelectorAll(".step__num"));
+      if (c.wideSteps) {
+        gsap.fromTo(steps, { "--progress": 0 }, {
+          "--progress": 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: steps, start: "top 78%", end: "bottom 52%", scrub: 0.6,
+            onUpdate: function (self) {
+              nums.forEach(function (n, i) {
+                n.classList.toggle("is-active", self.progress >= (i / (nums.length - 1)) * 0.97);
+              });
+            }
+          }
+        });
+      } else {
+        nums.forEach(function (n) {
+          ST.create({
+            trigger: n, start: "top 75%",
+            onEnter: function () { n.classList.add("is-active"); },
+            onLeaveBack: function () { n.classList.remove("is-active"); }
+          });
+        });
+      }
+    });
+
+    /* ---------- 4. Parallax leve en fotografías (escritorio) ---------- */
+    if (c.desktop) {
+      gsap.utils.toArray(".media-frame__img img").forEach(function (img) {
+        gsap.fromTo(img, { yPercent: -4, scale: 1.1 }, {
+          yPercent: 4, scale: 1.1, ease: "none",
+          scrollTrigger: { trigger: img.parentElement, start: "top bottom", end: "bottom top", scrub: true }
+        });
+      });
+    }
+
+    /* ---------- 5. Brillo dorado que sigue al cursor (mouse) ---------- */
+    if (c.pointer) {
+      var glowEls = d.querySelectorAll(".quote-tile, .card, .post-card");
+      glowEls.forEach(function (el) { el.classList.add("glow"); });
+      var onMove = function (e) {
+        var el = e.target.closest && e.target.closest(".glow");
+        if (!el) return;
+        var r = el.getBoundingClientRect();
+        el.style.setProperty("--mx", (e.clientX - r.left) + "px");
+        el.style.setProperty("--my", (e.clientY - r.top) + "px");
+      };
+      d.addEventListener("pointermove", onMove, { passive: true });
+      return function () {
+        d.removeEventListener("pointermove", onMove);
+        glowEls.forEach(function (el) { el.classList.remove("glow"); });
+      };
+    }
+  });
+
+  /* Recalcular posiciones cuando cambia la altura de la página */
+  var refresh = function () { requestAnimationFrame(function () { ST.refresh(); }); };
+  d.addEventListener("zelva:lang", refresh);
+  d.addEventListener("toggle", refresh, true);
+  d.addEventListener("click", function (e) {
+    if (e.target.closest("[role='tab'], [data-filter]")) refresh();
+  });
+  window.addEventListener("load", refresh);
+})();

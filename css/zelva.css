@@ -762,6 +762,35 @@ fieldset.field { border: 0; margin: 0; padding: 0; }
 .js [data-reveal][data-delay="2"] { transition-delay: .16s; }
 .js [data-reveal][data-delay="3"] { transition-delay: .24s; }
 
+/* ---------- Animaciones con GSAP (js/zelva-motion.js) ----------------- */
+.has-gsap [data-reveal] { transition: none; }
+/* Evita parpadeos mientras arranca la animación de la portada */
+.intro :is(.hero, .page-hero, .article-hero, .notice) :is(h1, .breadcrumb, .eyebrow, .lead, .hero__actions, .page-hero__actions,
+  .legal-meta, .article-meta, .article-cover, .media-frame, .quote-card, .trust, .notice__icon, .notice__actions) { opacity: 0; }
+.split-line { will-change: transform, opacity; }
+
+/* Proceso: la línea dorada avanza con el scroll */
+.steps { isolation: isolate; }
+.steps::before { transform-origin: left center; transform: scaleX(var(--progress, 1)); }
+.has-gsap .steps::before { background: var(--gold); }
+.has-gsap .steps::after { content: ""; position: absolute; top: 28px; left: 28px; right: 28px; height: 1.5px; background: var(--green-12); z-index: -1; }
+.step__num { transition: background-color .5s var(--ease), color .5s var(--ease), border-color .5s var(--ease), box-shadow .5s var(--ease); }
+.has-gsap .step__num.is-active { background: var(--green); border-color: var(--green); color: var(--white); box-shadow: 0 0 0 6px rgba(201, 162, 39, .2); }
+
+/* Brillo dorado en el borde que sigue al cursor (idea del "Glowing Effect") */
+.glow { position: relative; }
+.glow::after {
+  content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  border-radius: inherit; padding: 1.5px;
+  background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), var(--gold-light), rgba(201, 162, 39, .45) 35%, rgba(201, 162, 39, 0) 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0; transition: opacity .35s var(--ease);
+}
+.glow:hover::after { opacity: 1; }
+.quote-tile.glow:hover { background: radial-gradient(160px circle at var(--mx, 50%) var(--my, 50%), rgba(201, 162, 39, .1), var(--white) 70%); }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
@@ -804,7 +833,7 @@ fieldset.field { border: 0; margin: 0; padding: 0; }
   .promises { grid-template-columns: 1fr; }
   .promise + .promise { border-left: 0; border-top: 1px solid var(--green-12); }
   .steps { grid-template-columns: 1fr 1fr; row-gap: 40px; }
-  .steps::before { display: none; }
+  .steps::before, .has-gsap .steps::after { display: none; }
   .grid-3, .grid-2 { grid-template-columns: 1fr; }
   .traits { grid-template-columns: 1fr 1fr; }
   .trust { grid-template-columns: 1fr 1fr; }

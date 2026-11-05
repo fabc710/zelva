@@ -44,6 +44,7 @@
     root.setAttribute("lang", lang);
     applyLang(lang);
     if (persist) { try { localStorage.setItem(LANG_KEY, lang); } catch (e) { /* sin almacenamiento */ } }
+    d.dispatchEvent(new CustomEvent("zelva:lang", { detail: { lang: lang } }));
   }
 
   d.addEventListener("click", function (e) {
@@ -268,7 +269,8 @@
   }
 
   /* ---------- Animaciones de entrada --------------------------------- */
-  var reveal = d.querySelectorAll("[data-reveal]");
+  // Con GSAP disponible, js/zelva-motion.js se encarga; esto es el respaldo.
+  var reveal = window.gsap && window.ScrollTrigger ? [] : d.querySelectorAll("[data-reveal]");
   if ("IntersectionObserver" in window) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
