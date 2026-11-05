@@ -323,7 +323,7 @@ p:last-child { margin-bottom: 0; }
 
 /* ---------- Hero (inicio) --------------------------------------------- */
 .hero { background: var(--grad-green); color: rgba(255, 255, 255, .84); overflow: hidden; }
-.hero__grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(40px, 6vw, 80px); align-items: center; padding-block: clamp(64px, 8vw, 112px) clamp(56px, 6vw, 84px); }
+.hero__grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(40px, 6vw, 80px); align-items: center; padding-block: clamp(48px, 4.5vw, 64px) clamp(40px, 4vw, 56px); }
 .hero__title { color: var(--white); margin-bottom: 24px; }
 .hero__lead { color: rgba(255, 255, 255, .82); max-width: 34em; margin-bottom: 36px; }
 .hero__actions { display: flex; flex-wrap: wrap; gap: 14px; }
@@ -916,12 +916,12 @@ p:last-child { margin-bottom: 0; }
 /* Portada del inicio con video: más transparente al centro para que se vea la escena */
 .hero-photo--video::after {
   background:
-    linear-gradient(90deg, rgba(16, 40, 30, .95) 0%, rgba(27, 67, 50, .84) 30%, rgba(27, 67, 50, .5) 56%, rgba(16, 40, 30, .62) 100%),
-    linear-gradient(0deg, rgba(16, 40, 30, .7) 0%, rgba(16, 40, 30, 0) 38%);
+    linear-gradient(90deg, rgba(16, 40, 30, .95) 0%, rgba(27, 67, 50, .84) 30%, rgba(27, 67, 50, .42) 58%, rgba(16, 40, 30, .22) 100%),
+    linear-gradient(0deg, rgba(16, 40, 30, .72) 0%, rgba(16, 40, 30, 0) 34%);
 }
 .hero-photo--video .hero__title, .hero-photo--video .hero__lead { text-shadow: 0 2px 18px rgba(16, 40, 30, .45); }
 .hero-video__toggle {
-  position: absolute; right: max(var(--gutter), calc((100vw - var(--container)) / 2)); bottom: 96px; z-index: 2;
+  position: absolute; right: max(var(--gutter), calc((100vw - var(--container)) / 2)); bottom: 104px; z-index: 2;
   width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
   background: rgba(16, 40, 30, .35); border: 1px solid rgba(255, 255, 255, .35); color: var(--white); font-size: 1.1rem;
   backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: background-color .25s, border-color .25s;
